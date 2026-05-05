@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+ * GLOBAL RESET 
+ * - Hapus overflow: hidden global, biar tiap halaman bisa atur sendiri 
+ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100vh;
+  height: 100svh;
+  width: 100vw;
+}
+
+body {
+  background-color: #0f172a;
+  color: #f8fafc;
+  font-family: system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 
+ * ACCESSIBILITY: Respect reduced motion preference 
+ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* 
+ * Utility class untuk fokus indicator yang jelas (WCAG) 
+ */
+.focus-visible {
+  @apply outline outline-2 outline-blue-400 outline-offset-2;
+}
