@@ -1,14 +1,24 @@
 # =====================================
+# PYTHON
+# =====================================
+
+Backend/venv/
+Backend/__pycache__/
+*.pyc
+
+# =====================================
 # DEPENDENCIES & BUILD OUTPUT
 # =====================================
+
 node_modules/
 dist/
 dist-ssr/
 .vite/
 
 # =====================================
-# ENVIRONMENT VARIABLES (WAJIB DI-IGNORE)
+# ENVIRONMENT VARIABLES
 # =====================================
+
 .env
 .env.local
 .env.*.local
@@ -17,6 +27,7 @@ dist-ssr/
 # =====================================
 # LOGS & DEBUG
 # =====================================
+
 logs/
 *.log
 npm-debug.log*
@@ -26,6 +37,7 @@ yarn-error.log*
 # =====================================
 # EDITOR & OS FILES
 # =====================================
+
 .vscode/*
 !.vscode/extensions.json
 .idea/
