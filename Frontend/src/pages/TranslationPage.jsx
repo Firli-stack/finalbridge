@@ -5,6 +5,7 @@ export function TranslationPage({ onBack }) {
 
   const [cameraOn, setCameraOn] = useState(false);
   const [streamUrl, setStreamUrl] = useState(null);
+  const [isCameraLoading, setIsCameraLoading] = useState(false);
 
   // HANDLE SWITCH
   const handleCameraToggle = () => {
@@ -14,11 +15,13 @@ export function TranslationPage({ onBack }) {
       // OFF
       setCameraOn(false);
       setStreamUrl(null);
+      setIsCameraLoading(false);
 
     } else {
 
       // ON
       setCameraOn(true);
+      setIsCameraLoading(true); // Mulai memuat sensor kamera
 
       // cache buster supaya stream fresh
       setStreamUrl(
@@ -86,19 +89,32 @@ export function TranslationPage({ onBack }) {
           </div>
 
           {/* VIDEO STREAM */}
-          <div className="flex-1 flex items-center justify-center bg-black p-2">
+          <div className="flex-1 flex items-center justify-center bg-black p-2 relative overflow-hidden">
+            <img
+              src={streamUrl || ""}
+              alt="Camera Stream"
+              onLoad={() => setIsCameraLoading(false)} // Selesai loading saat frame pertama tiba!
+              className={`max-w-full max-h-full rounded-lg transition-opacity duration-500 ${
+                cameraOn && !isCameraLoading ? "opacity-100" : "opacity-0 absolute"
+              }`}
+            />
 
-            {streamUrl ? (
+            {/* loading indicator */}
+            {cameraOn && isCameraLoading && (
+              <div className="text-center flex flex-col items-center justify-center gap-3">
+                <div className="w-10 h-10 border-4 border-blue-400/20 border-t-blue-400 rounded-full animate-spin"></div>
+                <div>
+                  <p className="text-blue-400 text-base font-semibold animate-pulse">
+                    Menyiapkan Sensor Kamera...
+                  </p>
+                  <p className="text-slate-500 text-xs mt-1">
+                    Memuat model AI deteksi gestur tangan
+                  </p>
+                </div>
+              </div>
+            )}
 
-              <img
-                key={streamUrl}
-                src={streamUrl}
-                alt="Camera Stream"
-                className="max-w-full max-h-full"
-              />
-
-            ) : (
-
+            {!cameraOn && (
               <div className="text-center">
 
                 <p className="text-slate-400 text-lg font-semibold">
@@ -110,7 +126,6 @@ export function TranslationPage({ onBack }) {
                 </p>
 
               </div>
-
             )}
 
           </div>

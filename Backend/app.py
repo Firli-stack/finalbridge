@@ -1,13 +1,24 @@
+import time
+import asyncio
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 import cv2
 import mediapipe as mp
 
+import camera
 from camera import get_frame
 from gesture import detect_hand
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup: Kamera dibuka secara dinamis saat dipanggil, tidak perlu dikunci dari awal
+    yield
+    # Shutdown: Pastikan dilepas saat aplikasi ditutup penuh
+    camera.release_camera()
+
+app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -19,32 +30,33 @@ app.add_middleware(
 
 mp_hands = mp.solutions.hands
 
-
+# Menggunakan async generator agar responsif terhadap sinyal pembatalan (shutdown/disconnect)
+# tetapi memindahkan operasi blocking berat ke thread pool terpisah menggunakan asyncio.to_thread.
 async def generate_frames(request: Request):
-
-    # HANDS LOCAL (BUKAN GLOBAL)
     hands = mp_hands.Hands(
         min_detection_confidence=0.7,
         min_tracking_confidence=0.7
     )
 
     try:
-
         while True:
-
-            # kalau client disconnect → stop instant
+            # Pengecekan pemutusan koneksi (disconnect) yang sangat responsif
             if await request.is_disconnected():
                 break
 
-            frame = get_frame()
+            # Menjalankan I/O kamera secara non-blocking di thread terpisah
+            frame = await asyncio.to_thread(get_frame)
 
             if frame is None:
+                # Hindari tight loop (CPU 100%) dengan jeda tidur non-blocking
+                await asyncio.sleep(0.1)
                 continue
 
-            frame, text = detect_hand(frame, hands)
+            # Menjalankan CPU-bound MediaPipe secara non-blocking di thread terpisah
+            frame, text = await asyncio.to_thread(detect_hand, frame, hands)
 
-            _, buffer = cv2.imencode('.jpg', frame)
-
+            # Menjalankan kompresi OpenCV secara non-blocking di thread terpisah
+            _, buffer = await asyncio.to_thread(cv2.imencode, '.jpg', frame)
             frame_bytes = buffer.tobytes()
 
             yield (
@@ -56,11 +68,13 @@ async def generate_frames(request: Request):
 
     finally:
         hands.close()
+        # Lepaskan kamera saat stream dihentikan (tutup koneksi/kamera off di FE)
+        # agar lampu LED kamera laptop padam secara bersih.
+        camera.release_camera()
 
 
 @app.get("/video")
 async def video_feed(request: Request):
-
     return StreamingResponse(
         generate_frames(request),
         media_type='multipart/x-mixed-replace; boundary=frame'

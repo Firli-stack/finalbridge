@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 
 import { Landing } from "./pages/LandingPage";
 import { TranslationPage } from "./pages/TranslationPage";
@@ -6,47 +6,61 @@ import { TranslationPage } from "./pages/TranslationPage";
 import { LoginAdmin } from "./pages/LoginAdmin";
 import { Admindashboard } from "./pages/Admindashboard";
 
-function App() {
-  // landing | login | dashboard | translation
-  const [view, setView] = useState("landing");
+function NavigationWrapper() {
+  const navigate = useNavigate();
 
-  // ── Login Admin ──
-  if (view === "login") {
-    return (
-      <LoginAdmin
-        onLogin={() => setView("dashboard")}
-        onBack={() => setView("landing")}
-      />
-    );
-  }
-
-  // ── Dashboard Admin ──
-  if (view === "dashboard") {
-    return (
-      <Admindashboard
-        onLogout={() => setView("landing")}
-      />
-    );
-  }
-
-  // ── Translation Page ──
-  if (view === "translation") {
-    return (
-      <TranslationPage
-        onBack={() => setView("landing")}
-      />
-    );
-  }
-
-  // ── Landing Page ──
   return (
-    <Landing
-      // tombol mulai sekarang
-      onStart={() => setView("translation")}
+    <Routes>
+      {/* Landing Page */}
+      <Route
+        path="/"
+        element={
+          <Landing
+            onStart={() => navigate("/translation")}
+            onAdmin={() => navigate("/login")}
+          />
+        }
+      />
 
-      // tombol login admin
-      onAdmin={() => setView("login")}
-    />
+      {/* Translation Page */}
+      <Route
+        path="/translation"
+        element={
+          <TranslationPage
+            onBack={() => navigate("/")}
+          />
+        }
+      />
+
+      {/* Login Admin */}
+      <Route
+        path="/login"
+        element={
+          <LoginAdmin
+            onLogin={() => navigate("/dashboard")}
+            onBack={() => navigate("/")}
+          />
+        }
+      />
+
+      {/* Dashboard Admin */}
+      <Route
+        path="/dashboard"
+        element={
+          <Admindashboard
+            onLogout={() => navigate("/")}
+          />
+        }
+      />
+    </Routes>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <NavigationWrapper />
+    </BrowserRouter>
   );
 }
 

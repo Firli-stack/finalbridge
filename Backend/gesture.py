@@ -15,7 +15,7 @@ def detect_hand(frame, hands):
 
     result = hands.process(rgb)
 
-    text = "Tidak Ada Tangan"
+    text = "Tangan Tidak Terdeteksi"
     color = (0, 0, 255)
 
     if result.multi_hand_landmarks:
