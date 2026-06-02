@@ -45,3 +45,10 @@ yarn-error.log*
 *.swp
 *.suo
 *.ntvs*
+
+# =====================================
+# BRIDGECOM CUSTOM DATASETS (DIABAIKAN)
+# =====================================
+Backend/dataset/
+Backend/keypoints/
+*.npy

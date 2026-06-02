@@ -9,11 +9,12 @@ import mediapipe as mp
 
 import camera
 from camera import get_frame
-from gesture import detect_hand
+# Import fungsi detect_hand dan getter terjemahan dari gesture.py
+from gesture import detect_hand, get_current_translation, get_hand_status
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: Kamera dibuka secara dinamis saat dipanggil, tidak perlu dikunci dari awal
+    # Startup: Kamera dibuka secara dinamis saat dipanggil
     yield
     # Shutdown: Pastikan dilepas saat aplikasi ditutup penuh
     camera.release_camera()
@@ -28,34 +29,59 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-mp_hands = mp.solutions.hands
+# UBAH DI SINI: Gunakan holistic, bukan hands, agar cocok dengan model_bisindo.h5 (258 fitur)
+mp_holistic = mp.solutions.holistic
 
-# Menggunakan async generator agar responsif terhadap sinyal pembatalan (shutdown/disconnect)
-# tetapi memindahkan operasi blocking berat ke thread pool terpisah menggunakan asyncio.to_thread.
+# Pastikan import holistic di bagian atas app.py
+mp_holistic = mp.solutions.holistic
+
 async def generate_frames(request: Request):
-    hands = mp_hands.Hands(
-        min_detection_confidence=0.7,
-        min_tracking_confidence=0.7
+    # Mengoptimalkan parameter MediaPipe Holistic untuk Perangkat Edge / Laptop agar Ringan
+    holistic = mp_holistic.Holistic(
+        static_image_mode=False,        # False = Mode tracking video (Jauh lebih cepat dari gambar statis)
+        model_complexity=0,             # KUNCI UTAMA: 0 = Lite (Saves CPU, sangat direkomendasikan untuk Raspberry Pi)
+        min_detection_confidence=0.5,   # Diturunkan ke 0.5 agar deteksi awal lebih cepat
+        min_tracking_confidence=0.5
     )
+
+    # Variabel untuk teknik Frame Skipping
+    frame_counter = 0
+    last_text = "Menunggu Gerakan..."
+    color = (0, 0, 255)
 
     try:
         while True:
-            # Pengecekan pemutusan koneksi (disconnect) yang sangat responsif
             if await request.is_disconnected():
                 break
 
-            # Menjalankan I/O kamera secara non-blocking di thread terpisah
+            # Ambil frame dari camera.py
             frame = await asyncio.to_thread(get_frame)
 
             if frame is None:
-                # Hindari tight loop (CPU 100%) dengan jeda tidur non-blocking
-                await asyncio.sleep(0.1)
+                await asyncio.sleep(0.01)
                 continue
 
-            # Menjalankan CPU-bound MediaPipe secara non-blocking di thread terpisah
-            frame, text = await asyncio.to_thread(detect_hand, frame, hands)
+            frame_counter += 1
 
-            # Menjalankan kompresi OpenCV secara non-blocking di thread terpisah
+            # TEKNIK FRAME SKIPPING: Jalankan AI Holistic hanya setiap 3 frame sekali
+            if frame_counter % 3 == 0:
+                # Pastikan fungsi detect_hand di gesture.py menerima objek 'holistic'
+                frame, text = await asyncio.to_thread(detect_hand, frame, holistic)
+                last_text = text
+                color = (0, 255, 0) if "Terdeteksi" in last_text else (0, 0, 255)
+            else:
+                # Frame yang dilewati tetap diberi teks status terakhir agar video mengalir 60 FPS
+                cv2.putText(
+                    frame,
+                    last_text,
+                    (20, 80),
+                    cv2.FONT_HERSHEY_SIMPLEX,
+                    0.8,
+                    color,
+                    2
+                )
+
+            # Kompresi gambar ke JPEG
             _, buffer = await asyncio.to_thread(cv2.imencode, '.jpg', frame)
             frame_bytes = buffer.tobytes()
 
@@ -67,15 +93,25 @@ async def generate_frames(request: Request):
             )
 
     finally:
-        hands.close()
-        # Lepaskan kamera saat stream dihentikan (tutup koneksi/kamera off di FE)
-        # agar lampu LED kamera laptop padam secara bersih.
+        holistic.close()
         camera.release_camera()
 
 
 @app.get("/video")
 async def video_feed(request: Request):
     return StreamingResponse(
-        generate_frames(request),
-        media_type='multipart/x-mixed-replace; boundary=frame'
+        generate_frames(request), 
+        media_type="multipart/x-mixed-replace; boundary=frame"
     )
+
+
+# TAMBAHKAN ENDPOINT INI: Untuk melayani request polling dari React Frontend
+@app.get("/translation")
+async def get_translation():
+    """
+    Endpoint untuk mengambil hasil terjemahan sekaligus status deteksi tangan.
+    """
+    return {
+        "translation": get_current_translation(),
+        "hand_detected": get_hand_status()  # <-- Mengirimkan status true/false ke frontend
+    }
