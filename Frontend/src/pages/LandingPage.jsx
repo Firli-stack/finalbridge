@@ -136,7 +136,7 @@ const technologies = [
     bg: "#fff",
     textColor: "#111",
     border: "1px solid #ddd",
-    logo: "https://developers.google.com/static/mediapipe/images/mediapipe-logo.svg",
+    logo: "https://cdn.brandfetch.io/idL_Jl2SZd/theme/dark/logo.svg?c=1bxid64Mup7aczewSAYMX&t=1670440040290",
     link: "https://developers.google.com/mediapipe",
   },
   {

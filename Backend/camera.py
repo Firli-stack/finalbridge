@@ -10,18 +10,16 @@ def init_camera():
     if _cap is not None and _cap.isOpened():
         return _cap
 
-    # Coba beberapa index kamera (0 = internal, 1 = external, dst)
     for i in range(3):
         print(f"[camera] Mencoba kamera index {i}...")
-        # CAP_DSHOW dipakai biar lebih stabil di Windows
         cap = cv2.VideoCapture(i, cv2.CAP_DSHOW) 
         if cap.isOpened():
             ret, frame = cap.read()
             if ret and frame is not None:
                 print(f"[camera] ✅ Kamera {i} berhasil dibuka!")
-                cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-                cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
-                cap.set(cv2.CAP_PROP_FPS, 30)
+                cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+                cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+                cap.set(cv2.CAP_PROP_FPS, 24)
                 cap.set(cv2.CAP_PROP_BUFFERSIZE, 1) # Minimalisir lag
                 _cap = cap
                 return _cap
