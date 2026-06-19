@@ -122,7 +122,7 @@ Sistem menggunakan **Raspberry Pi**, **kamera**, dan **monitor** untuk menangkap
 
 ```bash
 git clone https://github.com/username/bridgecom.git
-cd bridgecom
+cd finalbridge
 ```
 
 ---
@@ -281,7 +281,7 @@ Password : admin123
 # 📁 Project Structure
 
 ```text
-bridgecom/
+finalbridge/
 │
 ├── Backend/
 │   ├── app.py
