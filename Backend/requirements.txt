@@ -1,14 +1,30 @@
+# Web Framework
 fastapi==0.136.3
 uvicorn[standard]==0.48.0
+
+# AI & Machine Learning
 tensorflow==2.18.0
 tensorflow-intel==2.18.0
 mediapipe==0.10.14
-protobuf==4.25.3
+scikit-learn==1.8.0
+scipy==1.17.1
+
+# Computer Vision
 opencv-python==4.10.0.84
 opencv-contrib-python==4.10.0.84
 numpy==1.26.4
-scikit-learn==1.8.0
-scipy==1.17.1
-matplotlib==3.10.9
 pillow==12.2.0
+
+# Database
+sqlalchemy==2.0.51
+
+# Authentication & Security
+passlib==1.7.4
+bcrypt==4.0.1
+python-jose[cryptography]==3.5.0
 python-multipart==0.0.29
+
+# Data Processing
+pandas==3.0.3
+matplotlib==3.10.9
+protobuf==4.25.3
