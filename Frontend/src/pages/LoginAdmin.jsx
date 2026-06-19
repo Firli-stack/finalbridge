@@ -15,6 +15,7 @@ const LockIcon = () => (
     <path d="M7 11V7a5 5 0 0 1 10 0v4" />
   </svg>
 );
+
 const UserIcon = () => (
   <svg
     width="22"
@@ -31,17 +32,62 @@ const UserIcon = () => (
   </svg>
 );
 
-export function LoginAdmin({ onLogin }) {
+const BackIcon = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M19 12H5M12 19l-7-7 7-7" />
+  </svg>
+);
+
+export function LoginAdmin({ onLogin, onBack }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [shake, setShake] = useState(false);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = () => {
-    if (username && password) {
+  const handleLogin = async () => {
+    setError("");
+    
+    if (!username || !password) {
+      setShake(true);
+      setError("Username dan password harus diisi!");
+      setTimeout(() => setShake(false), 500);
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (!response.ok) {
+        const errData = await response.json();
+        throw new Error(errData.detail || "Username atau password salah!");
+      }
+
+      const data = await response.json();
+      localStorage.setItem("admin_token", data.access_token);
       onLogin?.();
-    } else {
+      
+    } catch (err) {
+      setError(err.message);
       setShake(true);
       setTimeout(() => setShake(false), 500);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -57,6 +103,32 @@ export function LoginAdmin({ onLogin }) {
           display: flex; align-items: center; justify-content: center;
           background: conic-gradient(from 68deg at 0% 0%, #38B6FF 0deg, #AADEFF 87deg, #D5F5FF 112deg, #C4ECFF 120deg, #38B6FF 360deg);
           padding: 40px 20px;
+          position: relative;
+        }
+
+        .la-back-btn {
+          position: absolute;
+          top: 30px;
+          left: 30px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 10px 20px;
+          background: rgba(255,255,255,0.3);
+          border: 1px solid rgba(0,0,0,0.1);
+          border-radius: 30px;
+          font-family: 'Poppins', sans-serif;
+          font-size: 14px;
+          font-weight: 500;
+          color: #000;
+          cursor: pointer;
+          transition: background .2s, transform .15s;
+          backdrop-filter: blur(6px);
+          z-index: 10;
+        }
+        .la-back-btn:hover {
+          background: rgba(255,255,255,0.5);
+          transform: translateX(-2px);
         }
 
         .la-card {
@@ -75,7 +147,6 @@ export function LoginAdmin({ onLogin }) {
           to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* Left panel */
         .la-left {
           flex: 1;
           background: rgba(255,255,255,0.18);
@@ -84,14 +155,7 @@ export function LoginAdmin({ onLogin }) {
           gap: 24px;
           border-right: 2px solid rgba(0,0,0,0.12);
         }
-        .la-logo-svg {
-          filter: drop-shadow(0 2px 8px rgba(0,0,0,0.12));
-        }
-        .la-brand-name {
-          font-size: 26px; font-weight: 700; letter-spacing: 0.5px; color: #000;
-        }
 
-        /* Right panel */
         .la-right {
           flex: 1;
           display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -142,12 +206,28 @@ export function LoginAdmin({ onLogin }) {
           box-shadow: 0 4px 18px rgba(0,120,255,0.28);
           margin-top: 6px;
         }
-        .la-btn:hover {
+        .la-btn:hover:not(:disabled) {
           background: rgba(0,140,255,0.9);
           transform: translateY(-1px);
           box-shadow: 0 6px 22px rgba(0,120,255,0.38);
         }
-        .la-btn:active { transform: translateY(0); }
+        .la-btn:active:not(:disabled) { transform: translateY(0); }
+        .la-btn:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+
+        .la-error {
+          width: 100%;
+          padding: 12px 16px;
+          background: rgba(255, 87, 87, 0.15);
+          border: 1px solid rgba(255, 87, 87, 0.4);
+          border-radius: 12px;
+          color: #d32f2f;
+          font-size: 14px;
+          text-align: center;
+          animation: la-fadein .3s ease;
+        }
 
         @keyframes la-shake {
           0%,100% { transform: translateX(0); }
@@ -160,12 +240,20 @@ export function LoginAdmin({ onLogin }) {
           .la-card { flex-direction: column; width: 100%; border-radius: 28px; }
           .la-left { border-right: none; border-bottom: 2px solid rgba(0,0,0,0.1); padding: 36px 24px; }
           .la-right { padding: 40px 28px; }
+          .la-back-btn { top: 20px; left: 20px; padding: 8px 16px; font-size: 13px; }
         }
       `}</style>
 
       <div className="la-root">
+        {/* TOMBOL BACK DI POJOK KIRI ATAS */}
+        {onBack && (
+          <button className="la-back-btn" onClick={onBack}>
+            <BackIcon />
+            <span>Kembali</span>
+          </button>
+        )}
+
         <div className={`la-card ${shake ? "la-shake" : ""}`}>
-          {/* Left: Logo */}
           <div className="la-left">
             <img
               src="/assets/Bridge.png"
@@ -173,9 +261,10 @@ export function LoginAdmin({ onLogin }) {
               className="la-logo-img"
             />
           </div>
-          {/* Right: Form */}
           <div className="la-right">
             <h2 className="la-title">Masuk Sebagai Admin</h2>
+
+            {error && <div className="la-error">{error}</div>}
 
             <div className="la-input-wrap">
               <span className="la-input-icon">
@@ -188,6 +277,7 @@ export function LoginAdmin({ onLogin }) {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleLogin()}
+                disabled={isLoading}
               />
             </div>
 
@@ -202,11 +292,16 @@ export function LoginAdmin({ onLogin }) {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleLogin()}
+                disabled={isLoading}
               />
             </div>
 
-            <button className="la-btn" onClick={handleLogin}>
-              Masuk
+            <button 
+              className="la-btn" 
+              onClick={handleLogin}
+              disabled={isLoading}
+            >
+              {isLoading ? "Memproses..." : "Masuk"}
             </button>
           </div>
         </div>
