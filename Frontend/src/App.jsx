@@ -2,9 +2,9 @@ import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 
 import { Landing } from "./pages/LandingPage";
 import { TranslationPage } from "./pages/TranslationPage";
-
 import { LoginAdmin } from "./pages/LoginAdmin";
 import { Admindashboard } from "./pages/Admindashboard";
+import { ProtectedRoute } from "./components/ProtectedRoute"; // Import Satpam
 
 function NavigationWrapper() {
   const navigate = useNavigate();
@@ -25,11 +25,7 @@ function NavigationWrapper() {
       {/* Translation Page */}
       <Route
         path="/translation"
-        element={
-          <TranslationPage
-            onBack={() => navigate("/")}
-          />
-        }
+        element={<TranslationPage onBack={() => navigate("/")} />}
       />
 
       {/* Login Admin */}
@@ -43,13 +39,18 @@ function NavigationWrapper() {
         }
       />
 
-      {/* Dashboard Admin */}
+      {/* Dashboard Admin - DILINDUNGI */}
       <Route
         path="/dashboard"
         element={
-          <Admindashboard
-            onLogout={() => navigate("/")}
-          />
+          <ProtectedRoute>
+            <Admindashboard 
+              onLogout={() => {
+                localStorage.removeItem("admin_token");
+                navigate("/login");
+              }} 
+            />
+          </ProtectedRoute>
         }
       />
     </Routes>
