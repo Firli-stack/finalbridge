@@ -44,3 +44,9 @@ Thumbs.db
 # ─ Logs ────────────────────────────────────────────────
 *.log
 logs/
+
+dataset/
+*.mp4
+*.avi
+*.mov
+*.npy

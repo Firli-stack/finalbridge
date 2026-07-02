@@ -114,7 +114,6 @@ const PlayIcon = () => (
 );
 
 // ── Tech card data ───────────────────────────────────────────
-// Using Wikipedia/official SVG logos via CDN
 const technologies = [
   {
     name: "Raspberry Pi",
@@ -164,23 +163,25 @@ const technologies = [
   },
 ];
 
+// ── Team data dengan foto dan social links ──────────────────
 const team = [
-  { name: "Firli Hanifurahman", role: "Developer" },
-  { name: "Marsel V.P Naibaho", role: "Developer" },
+  { 
+    name: "Firli Hanifurahman", 
+    role: "Developer",
+    photo: "/assets/ireng.png", // Foto dari folder Frontend/assets/
+    github: "https://github.com/Firli-stack",
+    linkedin: "https://www.linkedin.com/in/firli-hanifurahman/",
+    email: "mailto:firlihanifurahman753@Gmail.com"
+  },
+  { 
+    name: "Marsel V.P Naibaho", 
+    role: "Developer",
+    photo: "/assets/ireng2.png", // Foto dari folder Frontend/assets/
+    github: "https://github.com/tamanaibaho",
+    linkedin: "https://www.linkedin.com/in/marsel-naibaho-648a70333?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+    email: "mailto:marselvicentiuspaltakmanaibaho@Gmail.com"
+  },
 ];
-
-// ── Avatar SVG (person silhouette) ──────────────────────────
-const AvatarSVG = () => (
-  <svg
-    viewBox="0 0 160 160"
-    width="160"
-    height="160"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <circle cx="80" cy="58" r="38" fill="#90CAF9" />
-    <ellipse cx="80" cy="148" rx="60" ry="36" fill="#90CAF9" />
-  </svg>
-);
 
 // ── Main Component ───────────────────────────────────────────
 export function Landing({ onStart, onAdmin }) {
@@ -317,7 +318,14 @@ export function Landing({ onStart, onAdmin }) {
           background: #e0f4ff;
           border-radius: 20px;
           display: flex; align-items: center; justify-content: center;
-          margin-bottom: 18px; overflow: hidden;
+          margin-bottom: 18px; 
+          overflow: hidden;
+          border: 3px solid rgba(0, 93, 255, 0.3);
+        }
+        .bc-avatar img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
         }
         .bc-social-btn {
           width: 38px; height: 38px;
@@ -325,9 +333,13 @@ export function Landing({ onStart, onAdmin }) {
           border: none; border-radius: 10px;
           display: flex; align-items: center; justify-content: center;
           cursor: pointer; color: #222;
-          transition: background .15s;
+          transition: background .15s, transform .15s;
+          text-decoration: none;
         }
-        .bc-social-btn:hover { background: rgba(0,0,0,0.16); }
+        .bc-social-btn:hover { 
+          background: rgba(0,0,0,0.16);
+          transform: translateY(-2px);
+        }
 
         /* ─── VISI MISI ─── */
         .bc-vm-wrap {
@@ -447,55 +459,55 @@ export function Landing({ onStart, onAdmin }) {
               Teknologi yang kami gunakan
             </h2>
             <div className="bc-tech-grid">
-  {technologies.map((tech) => (
-    <a
-      key={tech.name}
-      href={tech.link}
-      target="_blank"
-      rel="noopener noreferrer"
-      style={{ textDecoration: "none" }}
-    >
-      <div
-        className="bc-tech-card"
-        style={{
-          background: tech.bg,
-          border: tech.border || "none",
-          color: tech.textColor,
-          cursor: "pointer",
-        }}
-      >
-        {tech.logo ? (
-          <img src={tech.logo} alt={tech.name} />
-        ) : (
-          <>
-            <span
-              className="bc-lstm-big"
-              style={{ color: tech.textColor }}
-            >
-              {tech.logoText}
-            </span>
+              {technologies.map((tech) => (
+                <a
+                  key={tech.name}
+                  href={tech.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: "none" }}
+                >
+                  <div
+                    className="bc-tech-card"
+                    style={{
+                      background: tech.bg,
+                      border: tech.border || "none",
+                      color: tech.textColor,
+                      cursor: "pointer",
+                    }}
+                  >
+                    {tech.logo ? (
+                      <img src={tech.logo} alt={tech.name} />
+                    ) : (
+                      <>
+                        <span
+                          className="bc-lstm-big"
+                          style={{ color: tech.textColor }}
+                        >
+                          {tech.logoText}
+                        </span>
 
-            {tech.logoSub && (
-              <span
-                className="bc-tech-sub"
-                style={{ color: "#aaa" }}
-              >
-                {tech.logoSub}
-              </span>
-            )}
-          </>
-        )}
+                        {tech.logoSub && (
+                          <span
+                            className="bc-tech-sub"
+                            style={{ color: "#aaa" }}
+                          >
+                            {tech.logoSub}
+                          </span>
+                        )}
+                      </>
+                    )}
 
-        <span
-          className="bc-tech-name"
-          style={{ color: tech.textColor }}
-        >
-          {tech.name}
-        </span>
-      </div>
-    </a>
-  ))}
-</div>
+                    <span
+                      className="bc-tech-name"
+                      style={{ color: tech.textColor }}
+                    >
+                      {tech.name}
+                    </span>
+                  </div>
+                </a>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -516,7 +528,14 @@ export function Landing({ onStart, onAdmin }) {
             {team.map((member) => (
               <div key={member.name} className="bc-team-card">
                 <div className="bc-avatar">
-                  <AvatarSVG />
+                  <img 
+                    src={member.photo} 
+                    alt={member.name}
+                    onError={(e) => {
+                      // Fallback jika foto tidak ditemukan
+                      e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Ccircle cx='80' cy='58' r='38' fill='%2390CAF9'/%3E%3Cellipse cx='80' cy='148' rx='60' ry='36' fill='%2390CAF9'/%3E%3C/svg%3E";
+                    }}
+                  />
                 </div>
                 <span
                   style={{
@@ -532,15 +551,31 @@ export function Landing({ onStart, onAdmin }) {
                   {member.role}
                 </span>
                 <div style={{ display: "flex", gap: 10 }}>
-                  <button className="bc-social-btn">
+                  <a 
+                    href={member.github} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="bc-social-btn"
+                    title="GitHub"
+                  >
                     <GithubIcon />
-                  </button>
-                  <button className="bc-social-btn">
+                  </a>
+                  <a 
+                    href={member.linkedin} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="bc-social-btn"
+                    title="LinkedIn"
+                  >
                     <LinkedinIcon />
-                  </button>
-                  <button className="bc-social-btn">
+                  </a>
+                  <a 
+                    href={member.email} 
+                    className="bc-social-btn"
+                    title="Email"
+                  >
                     <MailIcon />
-                  </button>
+                  </a>
                 </div>
               </div>
             ))}
