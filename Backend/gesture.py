@@ -87,6 +87,9 @@ class _State:
         self._prev_time = time.time()
         self.hand_landmarker = None
         self.pose_landmarker = None
+        self.frame_count = 0
+        self.last_pose_result = None
+        self.last_hand_result = None
 
 _st = _State()
 
@@ -200,14 +203,25 @@ def _infer(seq: np.ndarray):
 
 def detect_hand(frame: np.ndarray):
     global _st
-    
+    _st.frame_count += 1
+
     hand_landmarker, pose_landmarker = _init_landmarkers()
     
     rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb)
     
-    pose_res = pose_landmarker.detect(mp_image)
-    hand_res = hand_landmarker.detect(mp_image)
+    if _st.frame_count % 3 == 0:
+        pose_res = pose_landmarker.detect(mp_image)
+        hand_res = hand_landmarker.detect(mp_image)
+
+        _st.last_pose_result = pose_res
+        _st.last_hand_result = hand_res
+    else:
+        pose_res = _st.last_pose_result
+        hand_res = _st.last_hand_result
+
+        if pose_res is None or hand_res is None:
+            return frame, _st.result_gloss, _st.result_conf
     
     h, w = frame.shape[:2]
     

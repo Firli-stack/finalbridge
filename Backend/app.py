@@ -86,7 +86,7 @@ async def ai_processor():
             if not _is_camera_active:
                 if camera._cap is not None:
                     camera.release_camera()
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(0.1)
                 continue
             
             if asyncio.current_task().cancelled():
@@ -242,14 +242,14 @@ async def websocket_video(websocket: WebSocket):
     _is_camera_active = True
     
     last_send = 0
-    frame_interval = 1.0 / 15
+    frame_interval = 1.0 / 10
     
     try:
         while True:
             now = time.time()
             if now - last_send >= frame_interval and _latest_frame is not None:
                 _, buf = await asyncio.to_thread(
-                    cv2.imencode, ".jpg", _latest_frame, [cv2.IMWRITE_JPEG_QUALITY, 75]
+                    cv2.imencode, ".jpg", _latest_frame, [cv2.IMWRITE_JPEG_QUALITY, 60]
                 )
                 await websocket.send_bytes(buf.tobytes())
                 last_send = time.time()

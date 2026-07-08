@@ -19,7 +19,7 @@ def init_camera():
                 print(f"[camera] ✅ Kamera {i} berhasil dibuka!")
                 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
                 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-                cap.set(cv2.CAP_PROP_FPS, 24)
+                cap.set(cv2.CAP_PROP_FPS, 15)
                 cap.set(cv2.CAP_PROP_BUFFERSIZE, 1) # Minimalisir lag
                 _cap = cap
                 return _cap
