@@ -12,7 +12,7 @@ def init_camera():
 
     for i in range(3):
         print(f"[camera] Mencoba kamera index {i}...")
-        cap = cv2.VideoCapture(i, cv2.CAP_DSHOW) 
+        cap = cv2.VideoCapture(i, cv2.CAP_V4L2) 
         if cap.isOpened():
             ret, frame = cap.read()
             if ret and frame is not None:

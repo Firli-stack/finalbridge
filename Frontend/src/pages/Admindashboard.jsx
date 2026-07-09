@@ -44,7 +44,7 @@ export function Admindashboard({ onLogout }) {
   const [loading, setLoading] = useState(true);
   const [confirmClear, setConfirmClear] = useState(false);
 
-  const API_URL = "http://127.0.0.1:8000";
+  const API_URL = window.location.origin;
   const getToken = () => localStorage.getItem("admin_token");
 
   // Fetch Log Aktivitas
