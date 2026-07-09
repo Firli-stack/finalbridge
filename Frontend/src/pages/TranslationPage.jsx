@@ -35,8 +35,8 @@ export function TranslationPage({ onBack }) {
     setIsCameraLoading(true);
 
     // 1. WebSocket untuk video stream
-    new WebSocket(
-    `ws://${window.location.host}/ws/video`);
+    const wsVideo = new WebSocket(
+      `ws://${window.location.hostname}:8000/ws/video`);
     wsVideo.binaryType = "arraybuffer";
     wsVideoRef.current = wsVideo;
 
@@ -62,8 +62,8 @@ export function TranslationPage({ onBack }) {
     wsVideo.onerror = (err) => console.error("Video WebSocket error:", err);
 
     // 2. WebSocket untuk hasil deteksi
-    new WebSocket(
-    `ws://${window.location.host}/ws/result`);
+    const wsResult = new WebSocket(
+      `ws://${window.location.hostname}:8000/ws/result`);
     wsResultRef.current = wsResult;
 
     wsResult.onmessage = (event) => {
