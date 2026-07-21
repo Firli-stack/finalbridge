@@ -168,7 +168,7 @@ const team = [
   { 
     name: "Firli Hanifurahman", 
     role: "Developer",
-    photo: "/assets/ireng.png", // Foto dari folder Frontend/assets/
+    photo: "/assets/Ireng.png", // Foto dari folder Frontend/assets/
     github: "https://github.com/Firli-stack",
     linkedin: "https://www.linkedin.com/in/firli-hanifurahman/",
     email: "mailto:firlihanifurahman753@Gmail.com"
@@ -176,7 +176,7 @@ const team = [
   { 
     name: "Marsel V.P Naibaho", 
     role: "Developer",
-    photo: "/assets/ireng2.png", // Foto dari folder Frontend/assets/
+    photo: "/assets/Ireng2.png", // Foto dari folder Frontend/assets/
     github: "https://github.com/tamanaibaho",
     linkedin: "https://www.linkedin.com/in/marsel-naibaho-648a70333?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
     email: "mailto:marselvicentiuspaltakmanaibaho@Gmail.com"

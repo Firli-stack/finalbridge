@@ -4,7 +4,6 @@ uvicorn[standard]==0.48.0
 
 # AI & Machine Learning
 tensorflow==2.18.0
-tensorflow-intel==2.18.0
 mediapipe==0.10.14
 scikit-learn==1.8.0
 scipy==1.17.1

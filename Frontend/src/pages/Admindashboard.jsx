@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import BridgeLogo from "../../assets/Bridge.png";
 
 const DashboardIcon = () => (
   <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -82,7 +81,7 @@ const UserIcon = () => (
 );
 
 export function Admindashboard({ onLogout }) {
-  const API_URL = "window.location.origin";
+  const API_URL = window.location.origin;
 
   const [activePage, setActivePage] = useState("dashboard");
   const [logs, setLogs] = useState([]);
@@ -289,7 +288,7 @@ export function Admindashboard({ onLogout }) {
     }
   };
 
-  const handleSaveGesture = async () => {
+    const handleSaveGesture = async () => {
     if (!gestureName.trim()) {
       alert("Nama gesture wajib diisi.");
       return;
@@ -297,6 +296,12 @@ export function Admindashboard({ onLogout }) {
 
     if (!editingGesture && !gestureVideo) {
       alert("Video gesture wajib diupload.");
+      return;
+    }
+
+    // --- CEK UKURAN FILE DI FRONTEND (MAKS 20MB) ---
+    if (gestureVideo && gestureVideo.size > 20 * 1024 * 1024) {
+      alert("Ukuran video terlalu besar! Maksimal 20MB. Silakan kompres video Anda.");
       return;
     }
 
@@ -746,8 +751,8 @@ export function Admindashboard({ onLogout }) {
                           className="gesture-video"
                           controls
                           preload="metadata"
-                          src={`/gesture-videos/${gesture.video_filename}`}
-                        />
+                          src={`/api/gesture-videos/${gesture.video_filename}`}
+                        />  
                       ) : (
                         <span className="no-video">
                           Video tidak tersedia
@@ -1525,7 +1530,7 @@ export function Admindashboard({ onLogout }) {
         <aside className={sidebarOpen ? "sidebar" : "sidebar closed"}>
           <div className="brand">
             <div className="brand-icon">
-              <img src={BridgeLogo} alt="BridgeCom Logo" />
+              <img src="/assets/Bridge.png" alt="BridgeCom Logo" />
             </div>
 
             <span className="brand-text">
@@ -1659,7 +1664,8 @@ export function Admindashboard({ onLogout }) {
                   <video
                     className="current-video"
                     controls
-                    src={`/gesture-videos/${editingGesture.video_filename}`}
+                    preload="metadata"
+                    src={`/api/gesture-videos/${editingGesture.video_filename}`}
                   />
                 )}
             </div>
