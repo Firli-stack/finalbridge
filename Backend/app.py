@@ -7,7 +7,20 @@ import os
 from datetime import datetime
 from contextlib import asynccontextmanager
 import cv2
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Depends, HTTPException, status
+from fastapi import (
+    FastAPI,
+    WebSocket,
+    WebSocketDisconnect,
+    Depends,
+    HTTPException,
+    status,
+    UploadFile,
+    File,
+    Form
+)
+from fastapi.staticfiles import StaticFiles
+from pathlib import Path
+import shutil
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
 from sqlalchemy.orm import Session
@@ -17,9 +30,13 @@ from camera import get_frame
 from gesture import detect_hand, LABEL_MAP
 import database
 import models
+import schemas
 from schemas import (
-    UserLogin, Token, ActivityLogResponse, 
-    StatisticsResponse, SystemStatusResponse
+    UserLogin,
+    Token,
+    ActivityLogResponse,
+    StatisticsResponse,
+    SystemStatusResponse
 )
 from auth import verify_password, create_access_token, get_current_admin_user
 
@@ -69,6 +86,8 @@ async def lifespan(app: FastAPI):
     os._exit(0)
 
 app = FastAPI(lifespan=lifespan)
+VIDEO_DIR = Path("../Frontend/public/gesture-videos")
+VIDEO_DIR.mkdir(parents=True, exist_ok=True)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -153,6 +172,173 @@ async def login(user_data: UserLogin, db: Session = Depends(database.get_db)):
 async def get_available_gestures():
     return {"gestures": list(LABEL_MAP.values()) if LABEL_MAP else []}
 
+@app.get(
+    "/api/admin/gestures",
+    response_model=list[schemas.GestureResponse]
+)
+async def get_gestures(
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(get_current_admin_user)
+):
+    gestures = db.query(models.Gesture).order_by(
+        models.Gesture.created_at.desc()
+    ).all()
+
+    return gestures
+
+
+@app.post(
+    "/api/admin/gestures",
+    response_model=schemas.GestureResponse
+)
+async def create_gesture(
+    name: str = Form(...),
+    video: UploadFile = File(...),
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(get_current_admin_user)
+):
+    existing_gesture = db.query(models.Gesture).filter(
+        models.Gesture.name == name
+    ).first()
+
+    if existing_gesture:
+        raise HTTPException(
+            status_code=400,
+            detail="Gesture already exists"
+        )
+
+    allowed_extensions = [".mp4", ".webm", ".mov", ".avi"]
+
+    file_extension = Path(video.filename).suffix.lower()
+
+    if file_extension not in allowed_extensions:
+        raise HTTPException(
+            status_code=400,
+            detail="Unsupported video format"
+        )
+
+    safe_name = name.lower().replace(" ", "_")
+    filename = f"{safe_name}{file_extension}"
+
+    file_path = VIDEO_DIR / filename
+
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(video.file, buffer)
+
+    new_gesture = models.Gesture(
+        name=name,
+        video_filename=filename
+    )
+
+    db.add(new_gesture)
+    db.commit()
+    db.refresh(new_gesture)
+
+    return new_gesture
+
+
+@app.put(
+    "/api/admin/gestures/{gesture_id}",
+    response_model=schemas.GestureResponse
+)
+async def update_gesture(
+    gesture_id: int,
+    name: str = Form(...),
+    video: UploadFile | None = File(None),
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(get_current_admin_user)
+):
+    gesture = db.query(models.Gesture).filter(
+        models.Gesture.id == gesture_id
+    ).first()
+
+    if not gesture:
+        raise HTTPException(
+            status_code=404,
+            detail="Gesture not found"
+        )
+
+    existing_gesture = db.query(models.Gesture).filter(
+        models.Gesture.name == name,
+        models.Gesture.id != gesture_id
+    ).first()
+
+    if existing_gesture:
+        raise HTTPException(
+            status_code=400,
+            detail="Gesture name already exists"
+        )
+
+    gesture.name = name
+
+    if video and video.filename:
+        allowed_extensions = [
+            ".mp4",
+            ".webm",
+            ".mov",
+            ".avi"
+        ]
+
+        file_extension = Path(video.filename).suffix.lower()
+
+        if file_extension not in allowed_extensions:
+            raise HTTPException(
+                status_code=400,
+                detail="Unsupported video format"
+            )
+
+        if gesture.video_filename:
+            old_file = VIDEO_DIR / gesture.video_filename
+
+            if old_file.exists():
+                old_file.unlink()
+
+        safe_name = name.lower().replace(" ", "_")
+        filename = f"{safe_name}{file_extension}"
+
+        file_path = VIDEO_DIR / filename
+
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(video.file, buffer)
+
+        gesture.video_filename = filename
+
+    db.commit()
+    db.refresh(gesture)
+
+    return gesture
+
+
+@app.delete(
+    "/api/admin/gestures/{gesture_id}"
+)
+async def delete_gesture(
+    gesture_id: int,
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(get_current_admin_user)
+):
+    gesture = db.query(models.Gesture).filter(
+        models.Gesture.id == gesture_id
+    ).first()
+
+    if not gesture:
+        raise HTTPException(
+            status_code=404,
+            detail="Gesture not found"
+        )
+
+    if gesture.video_filename:
+        video_file = VIDEO_DIR / gesture.video_filename
+
+        if video_file.exists():
+            video_file.unlink()
+
+    db.delete(gesture)
+    db.commit()
+
+    return {
+        "message": "Gesture deleted successfully"
+    }
 @app.get("/api/admin/activity-logs", response_model=list[ActivityLogResponse])
 async def get_activity_logs(
     limit: int = 100, 
