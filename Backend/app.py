@@ -80,7 +80,7 @@ ALLOWED_MIME = {
 MAX_VIDEO_SIZE = 20 * 1024 * 1024
 
 # ==========================================================
-# GLOBAL STATE
+# GLOBAL STATE & THREADING
 # ==========================================================
 
 _latest_frame = None
@@ -92,14 +92,28 @@ _latest_result = {
 }
 
 _last_db_saved_gloss = None
-
 _last_sent_gloss = None
 
-_is_camera_active = False
+_active_video_clients = 0
+_state_lock = asyncio.Lock()
 
 _is_shutting_down = False
-
 _start_time = datetime.now()
+
+def _save_activity_log(gloss: str, confidence: float):
+    """Fungsi helper sinkron untuk menyimpan log ke SQLite di thread terpisah"""
+    db = database.SessionLocal()
+    try:
+        log = models.ActivityLog(
+            gesture_text=gloss,
+            confidence=float(confidence),
+        )
+        db.add(log)
+        db.commit()
+    except Exception as e:
+        print(f"[Database Log Error] {e}")
+    finally:
+        db.close()
 
 # ==========================================================
 # LIFESPAN
@@ -182,14 +196,13 @@ async def ai_processor():
     global _latest_frame
     global _latest_result
     global _last_db_saved_gloss
-    global _is_camera_active
     global _is_shutting_down
 
     try:
 
         while not _is_shutting_down:
 
-            if not _is_camera_active:
+            if _active_video_clients <= 0:
 
                 if camera._cap is not None:
                     camera.release_camera()
@@ -213,25 +226,9 @@ async def ai_processor():
             if gloss:
 
                 if gloss != _last_db_saved_gloss:
-
-                    db = database.SessionLocal()
-
-                    try:
-
-                        log = models.ActivityLog(
-                            gesture_text=gloss,
-                            confidence=float(conf),
-                        )
-
-                        db.add(log)
-
-                        db.commit()
-
-                        _last_db_saved_gloss = gloss
-
-                    finally:
-
-                        db.close()
+                    # Simpan ke DB secara non-blocking di worker thread
+                    await asyncio.to_thread(_save_activity_log, gloss, conf)
+                    _last_db_saved_gloss = gloss
 
                 # Publish gesture ke MQTT Broker untuk IoT System
                 mqtt_manager.publish_gesture(gloss, conf)
@@ -706,12 +703,14 @@ async def get_system_status(
     ),
 ):
 
+    is_online = _active_video_clients > 0
+
     return SystemStatusResponse(
-        camera_online=_is_camera_active,
+        camera_online=is_online,
         device_connected=True,
         last_seen=(
             datetime.now()
-            if _is_camera_active
+            if is_online
             else None
         ),
     )
@@ -769,14 +768,15 @@ async def export_logs_csv(
 @app.websocket("/ws/video")
 async def websocket_video(websocket: WebSocket):
 
-    global _is_camera_active
+    global _active_video_clients
     global _latest_frame
 
     await websocket.accept()
 
-    _is_camera_active = True
+    async with _state_lock:
+        _active_video_clients += 1
 
-    frame_interval = 1 / 10
+    frame_interval = 1 / 15
     last_send = 0
 
     try:
@@ -794,7 +794,7 @@ async def websocket_video(websocket: WebSocket):
                     cv2.imencode,
                     ".jpg",
                     _latest_frame,
-                    [cv2.IMWRITE_JPEG_QUALITY, 60],
+                    [cv2.IMWRITE_JPEG_QUALITY, 65],
                 )
 
                 if success:
@@ -811,8 +811,11 @@ async def websocket_video(websocket: WebSocket):
 
     finally:
 
-        _is_camera_active = False
-        _latest_frame = None
+        async with _state_lock:
+            _active_video_clients = max(0, _active_video_clients - 1)
+            if _active_video_clients == 0:
+                _latest_frame = None
+
 
 
 # ==========================================================
