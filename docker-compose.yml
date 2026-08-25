@@ -12,13 +12,12 @@ services:
     volumes:
       - mosquitto_data:/mosquitto/data
       - mosquitto_log:/mosquitto/log
-    # Mengizinkan koneksi tanpa autentikasi untuk pengujian lokal/TA
     command: mosquitto -c /mosquitto-no-auth.conf
     networks:
       - bridgecom-network
 
   # -------------------------------------------------------------
-  # 2. Backend (FastAPI + AI Engine + IoT Bridge)
+  # 2. Backend (FastAPI + AI Engine + Hot Reload)
   # -------------------------------------------------------------
   backend:
     build:
@@ -29,31 +28,36 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - CAMERA_SOURCE=0 # Ganti dengan index kamera, IP Cam URL, atau nama file video
+      - CAMERA_SOURCE=0
       - MQTT_BROKER_HOST=mqtt-broker
       - MQTT_BROKER_PORT=1883
       - MQTT_TOPIC_GESTURE=bridgecom/gesture/detected
       - MQTT_TOPIC_STATUS=bridgecom/device/status
       - MQTT_TOPIC_SENSOR=bridgecom/sensor/trigger
     volumes:
+      - ./Backend:/app # Live-Sync kode backend (Auto-Reload Python)
       - backend_data:/app/uploads
-      - backend_db:/app
+    command: uvicorn app:app --host 0.0.0.0 --port 8000 --reload
     depends_on:
       - mqtt-broker
     networks:
       - bridgecom-network
 
   # -------------------------------------------------------------
-  # 3. Frontend (React + Vite + Tailwind via Nginx)
+  # 3. Frontend (React + Vite Hot Reload)
   # -------------------------------------------------------------
   frontend:
     build:
       context: ./Frontend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     container_name: bridgecom-frontend
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "5173:5173"
+      - "80:5173" # Bisa diakses di port 80 dan port 5173
+    volumes:
+      - ./Frontend:/app # Live-Sync kode frontend (Hot-Module-Replacement)
+      - /app/node_modules # Lindungi node_modules container dari overwrite
     depends_on:
       - backend
     networks:
@@ -67,4 +71,3 @@ volumes:
   mosquitto_data:
   mosquitto_log:
   backend_data:
-  backend_db:

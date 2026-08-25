@@ -7,17 +7,27 @@ export default defineConfig({
 
   server: {
     host: '0.0.0.0',
-
+    port: 5173,
+    watch: {
+      usePolling: true, // Memastikan Hot-Reload deteksi Ctrl+S di Windows-Docker secara instan
+    },
     proxy: {
       '/api': {
-	target: 'http://127.0.0.1:8000',
-	changeOrigin: true,
-	},
-
+        target: process.env.VITE_BACKEND_URL || 'http://backend:8000',
+        changeOrigin: true,
+      },
       '/ws': {
-	target: 'ws://127.0.0.1:8000',
-	ws: true,
-       },
-     },
-   },
+        target: process.env.VITE_BACKEND_WS_URL || 'ws://backend:8000',
+        ws: true,
+      },
+      '/stream': {
+        target: process.env.VITE_BACKEND_URL || 'http://backend:8000',
+        changeOrigin: true,
+      },
+      '/uploads': {
+        target: process.env.VITE_BACKEND_URL || 'http://backend:8000',
+        changeOrigin: true,
+      },
+    },
+  },
 })
