@@ -441,12 +441,81 @@ export function AboutPage({ onBack, onStart }) {
           box-shadow: 0 6px 14px rgba(0, 93, 255, 0.35);
         }
 
-        @media (max-width: 900px) {
-          .ab-header { padding: 0 20px; }
-          .ab-grid-3, .ab-team-grid, .ab-story-section { grid-template-columns: 1fr; }
-          .ab-title { font-size: 32px; }
-          .ab-desc { font-size: 17px; }
+        /* ─── Responsive Media Queries ─── */
+        @media (max-width: 1024px) {
+          .ab-header { padding: 0 32px; }
+          .ab-hero { padding: 50px 32px 40px; }
+          .ab-title { font-size: 36px; line-height: 48px; }
+          .ab-grid-3 { grid-template-columns: repeat(2, 1fr); padding: 0 24px; }
+          .ab-story-section { margin: 40px 24px; padding: 44px 36px; }
+          .ab-team-grid { padding: 0 24px; }
         }
+
+        @media (max-width: 768px) {
+          .ab-header { 
+            padding: 0 16px; 
+            height: 70px; 
+            gap: 12px;
+          }
+          .ab-back-btn { 
+            font-size: 13px; 
+            padding: 8px 14px; 
+            gap: 6px; 
+            white-space: nowrap;
+          }
+          .ab-logo-group { gap: 10px; }
+          .ab-logo-group span { font-size: 17px !important; }
+          .ab-logo-mark { width: 44px; height: 44px; border-radius: 12px; }
+          .ab-logo-mark img { width: 36px !important; height: 36px !important; }
+          
+          .ab-hero { padding: 40px 20px 32px; }
+          .ab-badge { font-size: 13.5px; padding: 6px 14px; }
+          .ab-title { font-size: 26px; line-height: 36px; margin: 16px 0 14px; }
+          .ab-desc { font-size: 15px; line-height: 28px; }
+
+          .ab-grid-3 { grid-template-columns: 1fr; gap: 20px; padding: 0 20px; margin: 24px auto; }
+          .ab-card { padding: 26px 22px; border-radius: 24px; }
+          .ab-card-title { font-size: 20px; }
+          .ab-card-text { font-size: 15px; }
+
+          .ab-story-section { 
+            grid-template-columns: 1fr; 
+            margin: 32px 20px; 
+            padding: 32px 24px; 
+            gap: 32px;
+            border-radius: 28px;
+            text-align: center;
+          }
+          .ab-story-content { align-items: center; }
+          .ab-section-tag { margin: 0 auto; }
+          .ab-story-title { font-size: 24px; line-height: 34px; }
+          .ab-story-p { font-size: 15px; line-height: 28px; text-align: left; }
+          .ab-story-points { grid-template-columns: 1fr; width: 100%; }
+          .ab-logo-frame { width: 180px; height: 180px; border-radius: 28px; padding: 18px; }
+
+          .ab-team-section { margin: 40px auto 60px; padding: 0 20px; }
+          .ab-team-grid { grid-template-columns: 1fr; gap: 24px; padding: 0; }
+          .ab-member-card { padding: 32px 20px; border-radius: 28px; }
+          .ab-member-name { font-size: 22px; }
+          .ab-member-bio { font-size: 14.5px; }
+        }
+
+        @media (max-width: 480px) {
+          .ab-header { 
+            padding: 0 12px; 
+            height: 64px; 
+          }
+          .ab-back-btn { 
+            font-size: 12px; 
+            padding: 6px 12px; 
+            border-radius: 18px;
+          }
+          .ab-logo-group span { display: none; }
+          .ab-logo-mark { width: 38px; height: 38px; border-radius: 10px; }
+          .ab-logo-mark img { width: 32px !important; height: 32px !important; }
+        }
+
+
       `}</style>
 
       <div className="ab-root">

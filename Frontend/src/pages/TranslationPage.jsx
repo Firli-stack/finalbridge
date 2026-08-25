@@ -104,9 +104,10 @@ export function TranslationPage({ onBack }) {
         </button>
       </header>
 
-      <main className="flex-1 p-4 flex gap-4 overflow-hidden">
-        <section className="flex-1 bg-slate-800 rounded-xl flex flex-col border border-slate-600 min-w-0">
+      <main className="flex-1 p-3 sm:p-4 flex flex-col md:flex-row gap-4 overflow-y-auto md:overflow-hidden min-h-0">
+        <section className="flex-1 bg-slate-800 rounded-xl flex flex-col border border-slate-600 min-w-0 min-h-[320px] md:min-h-0">
           <div className="p-3 border-b border-slate-700 flex items-center justify-between">
+
             <h2 className="text-sm font-semibold text-slate-300">
               Camera Control
             </h2>
@@ -163,8 +164,9 @@ export function TranslationPage({ onBack }) {
           </div>
         </section>
 
-        <aside className="w-80 bg-slate-800 rounded-xl flex flex-col border border-slate-600 shrink-0">
+        <aside className="w-full md:w-80 bg-slate-800 rounded-xl flex flex-col border border-slate-600 shrink-0">
           <div className="p-3 border-b border-slate-700">
+
             <h2 className="text-sm font-semibold text-slate-300">
               Terjemahan
             </h2>

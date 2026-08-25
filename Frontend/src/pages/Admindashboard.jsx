@@ -1498,26 +1498,46 @@ export function Admindashboard({ onLogout }) {
 
         @media (max-width: 650px) {
           .stats-grid {
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
           }
 
           .page-container {
-            padding: 25px 18px;
+            padding: 20px 14px;
           }
 
           .top-header {
-            padding: 0 18px;
+            padding: 0 16px;
           }
 
           .card-header {
             align-items: flex-start;
             flex-direction: column;
+            gap: 14px;
+          }
+
+          .card-actions {
+            width: 100%;
+            justify-content: space-between;
           }
 
           .page-heading {
             flex-direction: column;
+            align-items: stretch;
             gap: 15px;
           }
+
+          .add-button {
+            width: 100%;
+            justify-content: center;
+          }
+
+          .gesture-modal {
+            width: 95%;
+            padding: 22px 18px;
+            margin: 16px;
+          }
+        }
+
 
           .gesture-page-actions {
             width: 100%;

@@ -653,16 +653,96 @@ export function Landing({ onStart, onAdmin, onAbout }) {
         .bc-footer-link:hover { opacity: .6; }
         .bc-divider { border-top: 1px solid rgba(0,0,0,0.15); padding-top: 20px; text-align: center; font-size: 14px; }
 
-        /* ─── Responsive ─── */
-        @media (max-width: 900px) {
-          .bc-hero { grid-template-columns: 1fr; padding: 40px 24px 56px; }
-          .bc-hero-title { font-size: 34px; line-height: 46px; }
-          .bc-tech-grid { grid-template-columns: repeat(2, 1fr); }
-          .bc-team-grid { grid-template-columns: 1fr; }
-          .bc-vm-grid, .bc-footer-grid { grid-template-columns: 1fr; }
-          .bc-tech-wrap, .bc-team-wrap, .bc-vm-wrap, .bc-footer { padding-left: 24px; padding-right: 24px; }
-          .bc-header { padding: 0 20px; }
+        /* ─── Responsive (Mobile, Tablet, Desktop) ─── */
+        @media (max-width: 1024px) {
+          .bc-header { padding: 0 32px; }
+          .bc-hero { padding: 0 32px; }
+          .bc-hero-title { font-size: 36px; line-height: 46px; }
+          .bc-team-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+          .bc-vm-grid { gap: 32px; }
         }
+
+        @media (max-width: 768px) {
+          .bc-header { 
+            padding: 0 16px; 
+            height: 70px; 
+            gap: 12px;
+          }
+          .bc-logo-mark {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+          }
+          .bc-logo-mark img {
+            width: 38px !important;
+            height: 38px !important;
+          }
+          .bc-header-nav { 
+            gap: 8px; 
+          }
+          .bc-nav-btn { 
+            font-size: 13px; 
+            padding: 6px 10px; 
+          }
+          .bc-admin-btn { 
+            font-size: 13px; 
+            padding: 8px 14px; 
+            letter-spacing: 0;
+            white-space: nowrap;
+          }
+
+          .bc-hero { padding: 0 20px; gap: 24px; margin: 20px auto 36px; }
+          .bc-hero-top { flex-direction: column; text-align: center; gap: 20px; }
+          .bc-hero-logo-frame { width: 140px; height: 140px; border-radius: 28px; padding: 16px; }
+          .bc-hero-badge { margin: 0 auto 12px auto; font-size: 13px; }
+          .bc-hero-title { font-size: 28px; line-height: 38px; }
+
+          .bc-hero-bottom { padding: 24px 20px; border-radius: 24px; gap: 20px; }
+          .bc-hero-desc { font-size: 15px; line-height: 28px; }
+          .bc-hero-footer-row { flex-direction: column; align-items: stretch; gap: 20px; }
+          .bc-hero-features { justify-content: center; }
+          .bc-hero-feat-item { font-size: 13.5px; padding: 6px 14px; }
+          .bc-cta { width: 100%; justify-content: center; font-size: 18px; padding: 14px 28px; }
+
+          .bc-tech-wrap, .bc-team-wrap, .bc-vm-wrap, .bc-footer { padding-left: 20px; padding-right: 20px; }
+          .bc-tech-box { border-radius: 20px; padding: 30px 0 36px; }
+          .bc-marquee-card { width: 180px; height: 140px; border-radius: 18px; padding: 14px 10px; }
+          .bc-marquee-card img { max-height: 48px; max-width: 90px; }
+          .bc-tech-name { font-size: 14px; }
+
+          .bc-team-grid { grid-template-columns: 1fr; max-width: 360px; margin: 0 auto; }
+          .bc-vm-grid, .bc-footer-grid { grid-template-columns: 1fr; gap: 28px; }
+        }
+
+        @media (max-width: 480px) {
+          .bc-header {
+            padding: 0 12px;
+            height: 64px;
+          }
+          .bc-logo-mark {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+          }
+          .bc-logo-mark img {
+            width: 32px !important;
+            height: 32px !important;
+          }
+          .bc-nav-btn {
+            font-size: 12px;
+            padding: 5px 8px;
+          }
+          .bc-admin-btn {
+            font-size: 12px;
+            padding: 6px 12px;
+            border-radius: 18px;
+          }
+          .bc-hero-title { font-size: 24px; line-height: 34px; }
+          .bc-hero-features { flex-direction: column; width: 100%; }
+          .bc-hero-feat-item { justify-content: center; width: 100%; }
+        }
+
+
       `}</style>
 
       <div className="bc-root">
