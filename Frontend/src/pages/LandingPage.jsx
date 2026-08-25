@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 // ── Inline SVG Icons ────────────────────────────────────────
 const GithubIcon = (props) => (
@@ -112,26 +112,39 @@ const PlayIcon = () => (
     <polygon points="5 3 19 12 5 21 5 3" />
   </svg>
 );
+const SparklesIcon = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+    <path d="M5 3v4" />
+    <path d="M19 17v4" />
+    <path d="M3 5h4" />
+    <path d="M17 19h4" />
+  </svg>
+);
 
-// ── Tech card data ───────────────────────────────────────────
-const technologies = [
+
+// ── Tech card data (Dibagi menjadi 2 baris interaktif) ───────
+const technologiesRow1 = [
   {
-    name: "Raspberry Pi",
+    name: "Raspberry Pi 4",
     bg: "#C51A4A",
     textColor: "#fff",
     logo: "https://upload.wikimedia.org/wikipedia/en/c/cb/Raspberry_Pi_Logo.svg",
     link: "https://www.raspberrypi.com/",
   },
   {
-    name: "LSTM",
-    bg: "#1a1a2e",
-    textColor: "#fff",
-    logoText: "LSTM",
-    logoSub: "Long Short-Term Memory",
-    link: "https://en.wikipedia.org/wiki/Long_short-term_memory",
-  },
-  {
-    name: "MediaPipe",
+    name: "MediaPipe Hands",
     bg: "#fff",
     textColor: "#111",
     border: "1px solid #ddd",
@@ -139,11 +152,11 @@ const technologies = [
     link: "https://developers.google.com/mediapipe",
   },
   {
-    name: "React JS",
-    bg: "#20232a",
-    textColor: "#61dafb",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg",
-    link: "https://react.dev/",
+    name: "TensorFlow Lite",
+    bg: "#FF6F00",
+    textColor: "#fff",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/2/2d/Tensorflow_logo.svg",
+    link: "https://www.tensorflow.org/lite",
   },
   {
     name: "Python",
@@ -153,6 +166,32 @@ const technologies = [
     logo: "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg",
     link: "https://www.python.org/",
   },
+];
+
+const technologiesRow2 = [
+  {
+    name: "FastAPI",
+    bg: "#fff",
+    textColor: "#059669",
+    border: "1px solid #ddd",
+    logo: "https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png",
+    link: "https://fastapi.tiangolo.com/",
+  },
+  {
+    name: "MQTT IoT Protocol",
+    bg: "#fff",
+    textColor: "#660066",
+    border: "1px solid #ddd",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Mqtt-hor.svg",
+    link: "https://mqtt.org/",
+  },
+  {
+    name: "React JS",
+    bg: "#20232a",
+    textColor: "#61dafb",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg",
+    link: "https://react.dev/",
+  },
   {
     name: "Vite JS",
     bg: "#fff",
@@ -161,20 +200,30 @@ const technologies = [
     logo: "https://vitejs.dev/logo.svg",
     link: "https://vitejs.dev/",
   },
+  {
+    name: "Docker",
+    bg: "#fff",
+    textColor: "#2496ED",
+    border: "1px solid #ddd",
+    logo: "https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png",
+    link: "https://www.docker.com/",
+  },
 ];
+
+
 
 // ── Team data dengan foto dan social links ──────────────────
 const team = [
-  { 
-    name: "Firli Hanifurahman", 
+  {
+    name: "Firli Hanifurahman",
     role: "Developer",
     photo: "/assets/Ireng.png", // Foto dari folder Frontend/assets/
     github: "https://github.com/Firli-stack",
     linkedin: "https://www.linkedin.com/in/firli-hanifurahman/",
     email: "mailto:firlihanifurahman753@Gmail.com"
   },
-  { 
-    name: "Marsel V.P Naibaho", 
+  {
+    name: "Marsel V.P Naibaho",
     role: "Developer",
     photo: "/assets/Ireng2.png", // Foto dari folder Frontend/assets/
     github: "https://github.com/tamanaibaho",
@@ -184,9 +233,11 @@ const team = [
 ];
 
 // ── Main Component ───────────────────────────────────────────
-export function Landing({ onStart, onAdmin }) {
+export function Landing({ onStart, onAdmin, onAbout }) {
   return (
     <>
+
+
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -216,88 +267,317 @@ export function Landing({ onStart, onAdmin }) {
           border-radius: 14px;
           display: flex; align-items: center; justify-content: center;
         }
+        .bc-header-nav {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+        }
+        .bc-nav-btn {
+          background: transparent;
+          color: #003087;
+          font-family: 'Poppins', sans-serif;
+          font-weight: 600;
+          font-size: 15px;
+          padding: 8px 16px;
+          border-radius: 20px;
+          border: none;
+          cursor: pointer;
+          transition: all .2s;
+        }
+        .bc-nav-btn:hover {
+          background: rgba(255, 255, 255, 0.35);
+          color: #001f5c;
+        }
         .bc-admin-btn {
           background: #005DFF;
-          color: #93D7FF;
+          color: #FFFFFF;
           font-family: 'Poppins', sans-serif;
-          font-weight: 500; font-size: 15px; letter-spacing: 0.4px;
-          padding: 10px 28px; border-radius: 20px; border: none; cursor: pointer;
-          transition: opacity .15s;
+          font-weight: 600;
+          font-size: 15px;
+          letter-spacing: 0.3px;
+          padding: 11px 28px;
+          border-radius: 24px;
+          border: none;
+          cursor: pointer;
+          box-shadow: 0 4px 12px rgba(0, 93, 255, 0.3);
+          transition: all 0.2s ease;
         }
-        .bc-admin-btn:hover { opacity: .85; }
+        .bc-admin-btn:hover {
+          background: #004ecc;
+          transform: translateY(-1px);
+          box-shadow: 0 6px 16px rgba(0, 93, 255, 0.4);
+        }
 
-        /* ─── HERO ─── */
+
+
+        /* ─── HERO (TOP ROW LOGO+TITLE, BOTTOM DESC) ─── */
         .bc-hero {
-          max-width: 1300px; margin: 0 auto;
-          padding: 60px 48px 72px;
-          display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center;
+          max-width: 1200px; 
+          margin: 30px auto 48px;
+          padding: 0 48px;
+          display: flex;
+          flex-direction: column;
+          gap: 32px;
         }
-        .bc-hero-card {
-          background: rgba(185, 249, 255, 0);
-          border-radius: 62px;
-          padding: 48px 40px;
-          box-shadow: 0 4px 50px 2px rgba(93, 134, 148, 0);
-          display: flex; flex-direction: column; align-items: center; gap: 20px;
+
+        /* Baris Atas: Logo & Judul Sejajar */
+        .bc-hero-top {
+          display: flex;
+          align-items: center;
+          gap: 36px;
         }
-        .bc-logo-preview {
-          width: 100%; max-width: 300px;
-          aspect-ratio: 1;
-          background: rgba(255,255,255,0.85);
+
+        .bc-hero-logo-frame {
+          flex-shrink: 0;
+          width: 180px;
+          height: 180px;
           border-radius: 32px;
-          display: flex; align-items: center; justify-content: center;
-          box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+          background: #ffffff;
+          border: 4px solid #005DFF;
+          box-shadow: 0 0 0 10px rgba(255, 255, 255, 0.7), 0 18px 40px rgba(0, 93, 255, 0.25);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+          transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
         }
+        .bc-hero-logo-frame:hover {
+          transform: translateY(-6px) scale(1.03);
+          box-shadow: 0 0 0 12px rgba(255, 255, 255, 0.85), 0 24px 50px rgba(0, 93, 255, 0.32);
+        }
+        .bc-hero-logo-frame img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+
+        .bc-hero-title-group {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+
+        .bc-hero-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: rgba(255, 255, 255, 0.9);
+          color: #005DFF;
+          font-weight: 700;
+          font-size: 14.5px;
+          padding: 6px 18px;
+          border-radius: 20px;
+          margin-bottom: 12px;
+          width: fit-content;
+          box-shadow: 0 2px 10px rgba(0, 93, 255, 0.12);
+        }
+
         .bc-hero-title {
-          font-weight: 800; font-size: 52px; line-height: 62px; letter-spacing: 1px;
-          color: #000; margin-bottom: 22px;
+          font-weight: 800; 
+          font-size: 42px; 
+          line-height: 52px; 
+          letter-spacing: 0.5px;
+          color: #002b66; 
         }
+
+        /* Baris Bawah: Deskripsi Luas, Highlight Cards & Tombol CTA */
+        .bc-hero-bottom {
+          background: rgba(255, 255, 255, 0.55);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.75);
+          border-radius: 32px;
+          padding: 36px 44px;
+          box-shadow: 0 10px 30px rgba(93, 134, 148, 0.2);
+          display: flex;
+          flex-direction: column;
+          gap: 28px;
+        }
+
         .bc-hero-desc {
-          font-weight: 400; font-size: 16px; line-height: 30px; letter-spacing: 1px;
-          color: #000; margin-bottom: 40px;
+          font-weight: 400; 
+          font-size: 17.5px; 
+          line-height: 32px; 
+          letter-spacing: 0.3px;
+          color: #0f172a; 
         }
+
+        .bc-hero-footer-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 24px;
+        }
+
+        .bc-hero-features {
+          display: flex;
+          gap: 16px;
+          flex-wrap: wrap;
+        }
+
+        .bc-hero-feat-item {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 15px;
+          font-weight: 600;
+          color: #003087;
+          background: rgba(255, 255, 255, 0.85);
+          padding: 8px 18px;
+          border-radius: 20px;
+          border: 1px solid rgba(0, 93, 255, 0.15);
+        }
+
         .bc-cta {
           display: inline-flex; align-items: center; gap: 12px;
-          background: rgba(0,50,250,0.82);
-          box-shadow: 0 4px 29px 15px rgba(60,0,255,0.28);
+          background: #005DFF;
+          box-shadow: 0 6px 24px rgba(0, 93, 255, 0.4);
           color: #fff;
           font-family: 'Poppins', sans-serif;
-          font-weight: 600; font-size: 22px; letter-spacing: 1px;
-          padding: 18px 50px; border-radius: 100px; border: none; cursor: pointer;
-          transition: transform .2s, box-shadow .2s;
+          font-weight: 600; font-size: 20px; letter-spacing: 0.5px;
+          padding: 16px 44px; border-radius: 100px; border: none; cursor: pointer;
+          transition: transform .2s, box-shadow .2s, background .2s;
         }
         .bc-cta:hover {
-          transform: translateY(-3px) scale(1.03);
-          box-shadow: 0 8px 36px 18px rgba(60,0,255,0.34);
+          background: #004ecc;
+          transform: translateY(-3px) scale(1.02);
+          box-shadow: 0 10px 30px rgba(0, 93, 255, 0.5);
         }
 
-        /* ─── TECH SECTION ─── */
+
+        /* ─── TECH SECTION (CONTINUOUS INFINITE FLOW) ─── */
         .bc-tech-wrap {
           padding: 0 48px 64px;
         }
         .bc-tech-box {
-          max-width: 1100px; margin: 0 auto;
+          max-width: 1200px; 
+          margin: 0 auto;
           background: #B9F9FF;
-          border-radius: 20px;
+          border-radius: 28px;
           box-shadow: 0 4px 50px 2px #26C8FF;
-          padding: 40px 48px 48px;
-        }
-        .bc-tech-grid {
-          display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
-        }
-        .bc-tech-card {
-          border-radius: 20px;
-          height: 171px;
-          display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
-          padding: 20px 16px;
-          cursor: default;
-          transition: transform .18s;
+
+          padding: 40px 0 48px;
           overflow: hidden;
+          position: relative;
         }
-        .bc-tech-card:hover { transform: scale(1.04); }
-        .bc-tech-card img { max-height: 60px; max-width: 120px; object-fit: contain; }
-        .bc-tech-name { font-weight: 600; font-size: 15px; letter-spacing: 0.3px; text-align: center; }
-        .bc-tech-sub { font-size: 10px; opacity: .7; text-align: center; margin-top: -8px; }
-        .bc-lstm-big { font-weight: 800; font-size: 40px; letter-spacing: 3px; }
+        /* Efek bayangan pudar di ujung kiri dan kanan */
+        .bc-tech-box::before,
+        .bc-tech-box::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          width: 140px;
+          z-index: 10;
+          pointer-events: none;
+        }
+        .bc-tech-box::before {
+          left: 0;
+          background: linear-gradient(90deg, #B9F9FF 20%, rgba(185, 249, 255, 0) 100%);
+        }
+        .bc-tech-box::after {
+          right: 0;
+          background: linear-gradient(270deg, #B9F9FF 20%, rgba(185, 249, 255, 0) 100%);
+        }
+
+        .bc-marquee-track-left {
+          display: flex;
+          width: max-content;
+          gap: 28px;
+          animation: bcScrollLeft 24s linear infinite;
+          padding: 10px 0;
+        }
+        .bc-marquee-track-left:hover {
+          animation-play-state: paused;
+        }
+
+        .bc-marquee-track-right {
+          display: flex;
+          width: max-content;
+          gap: 28px;
+          animation: bcScrollRight 24s linear infinite;
+          padding: 10px 0;
+        }
+        .bc-marquee-track-right:hover {
+          animation-play-state: paused;
+        }
+
+        @keyframes bcScrollLeft {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+
+        @keyframes bcScrollRight {
+          0% {
+            transform: translateX(-50%);
+          }
+          100% {
+            transform: translateX(0);
+          }
+        }
+
+
+        .bc-marquee-card {
+          flex-shrink: 0;
+          width: 220px;
+          height: 165px;
+          border-radius: 24px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 12px;
+          padding: 20px 16px;
+          cursor: pointer;
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+          transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+          text-decoration: none;
+        }
+        .bc-marquee-card:hover {
+          transform: translateY(-8px) scale(1.08);
+          box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
+          z-index: 5;
+        }
+        .bc-marquee-card img {
+          max-height: 60px;
+          max-width: 120px;
+          object-fit: contain;
+        }
+        .bc-tech-name {
+          font-weight: 600;
+          font-size: 16px;
+          letter-spacing: 0.3px;
+          text-align: center;
+        }
+        .bc-tech-sub {
+          font-size: 11px;
+          opacity: 0.75;
+          text-align: center;
+          margin-top: -8px;
+        }
+        .bc-lstm-big {
+          font-weight: 800;
+          font-size: 38px;
+          letter-spacing: 2px;
+        }
+ .bc-dot {
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background: rgba(0, 93, 255, 0.25);
+          cursor: pointer;
+          transition: all 0.25s ease;
+        }
+        .bc-dot.active {
+          width: 24px;
+          border-radius: 12px;
+          background: #005DFF;
+        }
+
 
         /* ─── TEAM ─── */
         .bc-team-wrap { padding: 0 48px 64px; }
@@ -400,35 +680,39 @@ export function Landing({ onStart, onAdmin }) {
               }}
             />
           </div>
-          <button className="bc-admin-btn" onClick={onAdmin}>
-            Login sebagai Admin
-          </button>
+          <div className="bc-header-nav">
+            <button className="bc-nav-btn" onClick={onAbout}>
+              Tentang Kami
+            </button>
+            <button className="bc-admin-btn" onClick={onAdmin}>
+              Login sebagai Admin
+            </button>
+          </div>
         </header>
 
         {/* ── Hero ── */}
         <section className="bc-hero">
-          {/* Logo card */}
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <div className="bc-hero-card">
-              {/* Stylized "B" wordmark */}
-              <svg viewBox="0 0 240 240" width="500" height="500">
-                <image
-                  href="/assets/Bridge.png"
-                  x="0"
-                  y="0"
-                  width="240"
-                  height="240"
-                  preserveAspectRatio="xMidYMid slice"
-                />
-              </svg>
+          {/* Baris Atas: Logo dan Judul Sejajar */}
+          <div className="bc-hero-top">
+            <div className="bc-hero-logo-frame">
+              <img
+                src="/assets/Bridge.png"
+                alt="BridgeCom Official Emblem"
+              />
+            </div>
+
+            <div className="bc-hero-title-group">
+              <div className="bc-hero-badge">
+                <SparklesIcon /> Sistem Cerdas Penerjemah BISINDO
+              </div>
+              <h1 className="bc-hero-title">
+                Bangun Sistem Pembelajaran Inklusif Dengan BridgeCom
+              </h1>
             </div>
           </div>
 
-          {/* Text */}
-          <div>
-            <h1 className="bc-hero-title">
-              Bangun Sistem Pembelajaran Inklusif Dengan BridgeCom
-            </h1>
+          {/* Baris Bawah: Deskripsi Luas, Highlight Badges & Tombol CTA */}
+          <div className="bc-hero-bottom">
             <p className="bc-hero-desc">
               BridgeCom menghadirkan sistem penerjemah bahasa isyarat berbasis
               Internet of Things (IoT) yang dirancang untuk mendukung proses
@@ -437,14 +721,31 @@ export function Landing({ onStart, onAdmin }) {
               khusus, serta memudahkan dosen dalam menyampaikan materi secara
               lebih inklusif.
             </p>
-            <button className="bc-cta" onClick={onStart}>
-              <PlayIcon />
-              Mulai Sekarang
-            </button>
+
+            <div className="bc-hero-footer-row">
+              <div className="bc-hero-features">
+                <div className="bc-hero-feat-item">
+                  <span>✨</span> Real-time AI Vision
+                </div>
+                <div className="bc-hero-feat-item">
+                  <span>📡</span> IoT Connected
+                </div>
+                <div className="bc-hero-feat-item">
+                  <span>🎓</span> Inovasi PBL Polibatam
+                </div>
+              </div>
+
+              <button className="bc-cta" onClick={onStart}>
+                <PlayIcon />
+                Mulai Sekarang
+              </button>
+            </div>
           </div>
         </section>
 
-        {/* ── Teknologi ── */}
+
+
+        {/* ── Teknologi 3D Carousel ── */}
         <section className="bc-tech-wrap">
           <div className="bc-tech-box">
             <h2
@@ -453,63 +754,110 @@ export function Landing({ onStart, onAdmin }) {
                 fontSize: 36,
                 letterSpacing: 0.4,
                 textAlign: "center",
-                marginBottom: 36,
+                marginBottom: 20,
               }}
             >
               Teknologi yang kami gunakan
             </h2>
-            <div className="bc-tech-grid">
-              {technologies.map((tech) => (
+
+            {/* ── Baris 1: Mengalir ke Kiri ── */}
+            <div className="bc-marquee-track-left">
+              {[...technologiesRow1, ...technologiesRow1].map((tech, index) => (
                 <a
-                  key={tech.name}
+                  key={`row1-${tech.name}-${index}`}
                   href={tech.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ textDecoration: "none" }}
+                  className="bc-marquee-card"
+                  style={{
+                    background: tech.bg,
+                    color: tech.textColor,
+                    border: tech.border || "none",
+                  }}
                 >
-                  <div
-                    className="bc-tech-card"
-                    style={{
-                      background: tech.bg,
-                      border: tech.border || "none",
-                      color: tech.textColor,
-                      cursor: "pointer",
-                    }}
-                  >
-                    {tech.logo ? (
-                      <img src={tech.logo} alt={tech.name} />
-                    ) : (
-                      <>
+                  {tech.logo ? (
+                    <img src={tech.logo} alt={tech.name} />
+                  ) : (
+                    <>
+                      <span
+                        className="bc-lstm-big"
+                        style={{ color: tech.textColor }}
+                      >
+                        {tech.logoText}
+                      </span>
+
+                      {tech.logoSub && (
                         <span
-                          className="bc-lstm-big"
-                          style={{ color: tech.textColor }}
+                          className="bc-tech-sub"
+                          style={{ color: "#aaa" }}
                         >
-                          {tech.logoText}
+                          {tech.logoSub}
                         </span>
+                      )}
+                    </>
+                  )}
 
-                        {tech.logoSub && (
-                          <span
-                            className="bc-tech-sub"
-                            style={{ color: "#aaa" }}
-                          >
-                            {tech.logoSub}
-                          </span>
-                        )}
-                      </>
-                    )}
+                  <span
+                    className="bc-tech-name"
+                    style={{ color: tech.textColor }}
+                  >
+                    {tech.name}
+                  </span>
+                </a>
+              ))}
+            </div>
 
-                    <span
-                      className="bc-tech-name"
-                      style={{ color: tech.textColor }}
-                    >
-                      {tech.name}
-                    </span>
-                  </div>
+            {/* ── Baris 2: Mengalir ke Kanan ── */}
+            <div className="bc-marquee-track-right" style={{ marginTop: 16 }}>
+              {[...technologiesRow2, ...technologiesRow2].map((tech, index) => (
+                <a
+                  key={`row2-${tech.name}-${index}`}
+                  href={tech.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bc-marquee-card"
+                  style={{
+                    background: tech.bg,
+                    color: tech.textColor,
+                    border: tech.border || "none",
+                  }}
+                >
+                  {tech.logo ? (
+                    <img src={tech.logo} alt={tech.name} />
+                  ) : (
+                    <>
+                      <span
+                        className="bc-lstm-big"
+                        style={{ color: tech.textColor }}
+                      >
+                        {tech.logoText}
+                      </span>
+
+                      {tech.logoSub && (
+                        <span
+                          className="bc-tech-sub"
+                          style={{ color: "#aaa" }}
+                        >
+                          {tech.logoSub}
+                        </span>
+                      )}
+                    </>
+                  )}
+
+                  <span
+                    className="bc-tech-name"
+                    style={{ color: tech.textColor }}
+                  >
+                    {tech.name}
+                  </span>
                 </a>
               ))}
             </div>
           </div>
         </section>
+
+
+
 
         {/* ── Tim Pengembang ── */}
         <section className="bc-team-wrap">
@@ -528,8 +876,8 @@ export function Landing({ onStart, onAdmin }) {
             {team.map((member) => (
               <div key={member.name} className="bc-team-card">
                 <div className="bc-avatar">
-                  <img 
-                    src={member.photo} 
+                  <img
+                    src={member.photo}
                     alt={member.name}
                     onError={(e) => {
                       // Fallback jika foto tidak ditemukan
@@ -551,26 +899,26 @@ export function Landing({ onStart, onAdmin }) {
                   {member.role}
                 </span>
                 <div style={{ display: "flex", gap: 10 }}>
-                  <a 
-                    href={member.github} 
-                    target="_blank" 
+                  <a
+                    href={member.github}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="bc-social-btn"
                     title="GitHub"
                   >
                     <GithubIcon />
                   </a>
-                  <a 
-                    href={member.linkedin} 
-                    target="_blank" 
+                  <a
+                    href={member.linkedin}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="bc-social-btn"
                     title="LinkedIn"
                   >
                     <LinkedinIcon />
                   </a>
-                  <a 
-                    href={member.email} 
+                  <a
+                    href={member.email}
                     className="bc-social-btn"
                     title="Email"
                   >
@@ -689,12 +1037,17 @@ export function Landing({ onStart, onAdmin }) {
                 <div
                   style={{
                     display: "flex",
-                    alignItems: "center",
+                    alignItems: "flex-start",
                     gap: 10,
                     fontSize: 14,
                   }}
                 >
-                  <PhoneIcon /> <span>+6295-6118-81808</span>
+                  <div style={{ marginTop: 2}}><PhoneIcon />
+                  </div>
+                  <div style={{display: "flex", flexDirection: "column", gap: 2}}>
+                  <span>+6295-6118-81808</span>
+                  <span>+62821-7025-1116</span>
+                  </div>
                 </div>
                 <div style={{ fontSize: 12, opacity: 0.75, paddingLeft: 28 }}>
                   Customer Support: 09.00 – 17.00 WIB
@@ -731,15 +1084,13 @@ export function Landing({ onStart, onAdmin }) {
                 <button className="bc-footer-link" onClick={onStart}>
                   <ChevronRightIcon /> Mulai Menggunakan
                 </button>
-                <a className="bc-footer-link" href="#">
-                  <ChevronRightIcon /> Dokumentasi
-                </a>
-                <a className="bc-footer-link" href="#">
+                <button className="bc-footer-link" onClick={onAbout}>
                   <ChevronRightIcon /> Tentang Kami
-                </a>
+                </button>
               </div>
             </div>
           </div>
+
 
           <div className="bc-divider">
             Dikembangkan dengan untuk pendidikan inklusif di Indonesia

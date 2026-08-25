@@ -4,6 +4,7 @@ import { Landing } from "./pages/LandingPage";
 import { TranslationPage } from "./pages/TranslationPage";
 import { LoginAdmin } from "./pages/LoginAdmin";
 import { Admindashboard } from "./pages/Admindashboard";
+import { AboutPage } from "./pages/AboutPage";
 import { ProtectedRoute } from "./components/ProtectedRoute"; // Import Satpam
 
 function NavigationWrapper() {
@@ -18,6 +19,18 @@ function NavigationWrapper() {
           <Landing
             onStart={() => navigate("/translation")}
             onAdmin={() => navigate("/login")}
+            onAbout={() => navigate("/about")}
+          />
+        }
+      />
+
+      {/* About Page */}
+      <Route
+        path="/about"
+        element={
+          <AboutPage 
+            onBack={() => navigate("/")}
+            onStart={() => navigate("/translation")}
           />
         }
       />
@@ -56,6 +69,7 @@ function NavigationWrapper() {
     </Routes>
   );
 }
+
 
 function App() {
   return (
