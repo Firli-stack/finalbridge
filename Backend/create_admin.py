@@ -23,7 +23,7 @@ def create_first_admin():
         # Cek apakah admin sudah ada
         admin = db.query(models.User).filter(models.User.username == "admin").first()
         if admin:
-            print("⚠️  Admin sudah ada! Gak perlu dibuat lagi.")
+            print("[INFO] Admin sudah ada! Gak perlu dibuat lagi.")
             return
         
         # Buat admin baru
@@ -37,13 +37,14 @@ def create_first_admin():
         db.commit()
         db.refresh(admin)
         
-        print("✅ Admin berhasil dibuat!")
+        print("[OK] Admin berhasil dibuat!")
         print("Username: admin")
         print("Password: admin123")
-        print("⚠️  Ganti password ini nanti lewat database atau fitur edit.")
+        print("[INFO] Ganti password ini nanti lewat database atau fitur edit.")
         
     except Exception as e:
-        print(f"❌ Error saat membuat admin: {e}")
+        print(f"[ERROR] Error saat membuat admin: {e}")
+
     finally:
         db.close()
 

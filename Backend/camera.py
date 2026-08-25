@@ -43,7 +43,7 @@ def init_camera():
                 if cap.isOpened():
                     ret, frame = cap.read()
                     if ret and frame is not None:
-                        print(f"[camera] ✅ Kamera index {idx} berhasil dibuka!")
+                        print(f"[camera] [OK] Kamera index {idx} berhasil dibuka!")
                         cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
                         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
                         cap.set(cv2.CAP_PROP_FPS, 15)
@@ -55,13 +55,14 @@ def init_camera():
             print(f"[camera] Membuka streaming video dari: {source_env}")
             cap = cv2.VideoCapture(source_env)
             if cap.isOpened():
-                print(f"[camera] ✅ Stream kamera {source_env} berhasil terhubung!")
+                print(f"[camera] [OK] Stream kamera {source_env} berhasil terhubung!")
                 _cap = cap
                 return _cap
             cap.release()
 
         _last_failed_time = time.time()
-        print("[camera] ❌ Tidak ada kamera yang terdeteksi! Pastikan izin kamera aktif.")
+        print("[camera] [WARN] Tidak ada kamera yang terdeteksi! Pastikan izin kamera aktif.")
+
         return None
 
 def release_camera():

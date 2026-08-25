@@ -25,11 +25,12 @@ try:
         LABEL_MAP = json.load(f)
     
     MODEL_LOADED = True
-    print("[gesture] ✅ TFLite model loaded successfully!")
+    print("[gesture] [OK] TFLite model loaded successfully!")
 except Exception as e:
     MODEL_LOADED = False
-    print(f"[gesture] ️  Model tidak ditemukan ({e}), mode deteksi dasar.")
+    print(f"[gesture] [INFO] Model TFLite tidak aktif ({e}), mode fallback deteksi dasar.")
     LABEL_MAP = {}
+
 
 # ─ MediaPipe Setup (Pose + Hand Landmarker) ───────────────────────────────
 MODELS_DIR = "mp_models"

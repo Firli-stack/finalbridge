@@ -17,22 +17,23 @@ _client = None
 
 def on_connect(client, userdata, flags, rc, properties=None):
     if rc == 0:
-        print(f"[MQTT] ✅ Terhubung ke MQTT Broker: {MQTT_BROKER}:{MQTT_PORT} (Node: {DEVICE_ID})")
+        print(f"[MQTT] [OK] Terhubung ke MQTT Broker: {MQTT_BROKER}:{MQTT_PORT} (Node: {DEVICE_ID})")
         client.subscribe(MQTT_TOPIC_SENSOR)
         publish_status("online")
     else:
-        print(f"[MQTT] ⚠️ Gagal terhubung ke broker, kode: {rc}")
+        print(f"[MQTT] [WARN] Gagal terhubung ke broker, kode: {rc}")
 
 def on_message(client, userdata, msg):
     try:
         payload_str = msg.payload.decode("utf-8")
         try:
             data = json.loads(payload_str)
-            print(f"[MQTT] 📩 JSON Sensor diterima di [{msg.topic}]: {data}")
+            print(f"[MQTT] [DATA] JSON Sensor diterima di [{msg.topic}]: {data}")
         except json.JSONDecodeError:
-            print(f"[MQTT] 📩 Raw Data diterima di [{msg.topic}]: {payload_str}")
+            print(f"[MQTT] [DATA] Raw Data diterima di [{msg.topic}]: {payload_str}")
     except Exception as e:
         print(f"[MQTT] Error parsing pesan MQTT: {e}")
+
 
 def init_mqtt():
     global _client
