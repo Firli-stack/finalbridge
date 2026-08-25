@@ -212,12 +212,11 @@ const technologiesRow2 = [
 
 
 
-// ── Team data dengan foto dan social links ──────────────────
 const team = [
   {
     name: "Firli Hanifurahman",
     role: "Developer",
-    photo: "/assets/Ireng.png", // Foto dari folder Frontend/assets/
+    photo: "/assets/Ireng.png",
     github: "https://github.com/Firli-stack",
     linkedin: "https://www.linkedin.com/in/firli-hanifurahman/",
     email: "mailto:firlihanifurahman753@Gmail.com"
@@ -225,12 +224,13 @@ const team = [
   {
     name: "Marsel V.P Naibaho",
     role: "Developer",
-    photo: "/assets/Ireng2.png", // Foto dari folder Frontend/assets/
+    photo: "/assets/Ireng2.png",
     github: "https://github.com/tamanaibaho",
     linkedin: "https://www.linkedin.com/in/marsel-naibaho-648a70333?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
     email: "mailto:marselvicentiuspaltakmanaibaho@Gmail.com"
   },
 ];
+
 
 // ── Main Component ───────────────────────────────────────────
 export function Landing({ onStart, onAdmin, onAbout }) {
