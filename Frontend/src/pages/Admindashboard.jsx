@@ -817,20 +817,21 @@ export function Admindashboard({ onLogout }) {
 
         .admin-root {
           min-height: 100vh;
-          background: #F1F5F9;
+          background: linear-gradient(180.86deg, #00BFFF 24.72%, #BDEEF5 57.96%);
           display: flex;
-          color: #0f172a;
+          color: #002b66;
           font-family: 'Poppins', sans-serif;
         }
 
         .sidebar {
           width: 255px;
           min-height: 100vh;
-          background: #0F172A;
+          background: #76DEFF;
+          border-right: 1px solid rgba(0, 48, 135, 0.12);
           padding: 28px 18px;
           flex-shrink: 0;
           transition: width .3s ease;
-          box-shadow: 2px 0 12px rgba(0, 0, 0, 0.05);
+          box-shadow: 4px 0 20px rgba(93, 134, 148, 0.25);
         }
 
         .sidebar.closed {
@@ -842,16 +843,18 @@ export function Admindashboard({ onLogout }) {
           align-items: center;
           gap: 12px;
           padding: 0 10px 35px;
-          font-size: 20px;
-          font-weight: 700;
-          color: white;
+          font-size: 21px;
+          font-weight: 800;
+          color: #003087;
         }
 
         .brand-icon {
-          width: 40px;
-          height: 40px;
+          width: 44px;
+          height: 44px;
           border-radius: 12px;
-          background: rgba(255, 255, 255, 0.1);
+          background: rgba(20, 152, 254, 0.15);
+          border: 1px solid rgba(0, 0, 0, 0.2);
+          box-shadow: 0 3px 6px rgba(93, 134, 148, 0.4);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -880,15 +883,15 @@ export function Admindashboard({ onLogout }) {
           width: 100%;
           border: none;
           background: transparent;
-          color: #94A3B8;
+          color: #003087;
           display: flex;
           align-items: center;
           gap: 14px;
           padding: 12px 16px;
-          border-radius: 12px;
+          border-radius: 16px;
           cursor: pointer;
           font-family: inherit;
-          font-size: 14px;
+          font-size: 14.5px;
           font-weight: 600;
           text-align: left;
           transition: all .2s ease;
@@ -899,24 +902,25 @@ export function Admindashboard({ onLogout }) {
         }
 
         .menu-button:hover {
-          background: rgba(255, 255, 255, 0.06);
-          color: #F8FAFC;
+          background: rgba(255, 255, 255, 0.4);
+          color: #001f5c;
         }
 
         .menu-button.active {
           background: #005DFF;
           color: #ffffff;
-          box-shadow: 0 4px 12px rgba(0, 93, 255, 0.35);
+          box-shadow: 0 4px 14px rgba(0, 93, 255, 0.35);
         }
 
         .logout-menu {
           margin-top: 30px;
-          border-top: 1px solid rgba(255, 255, 255, 0.08);
+          border-top: 1px solid rgba(0, 48, 135, 0.15);
           padding-top: 18px;
+          color: #b91c1c;
         }
         .logout-menu:hover {
-          background: rgba(239, 68, 68, 0.12) !important;
-          color: #FCA5A5 !important;
+          background: rgba(239, 68, 68, 0.15) !important;
+          color: #991b1b !important;
         }
 
         .main-area {
@@ -925,49 +929,49 @@ export function Admindashboard({ onLogout }) {
         }
 
         .top-header {
-          height: 72px;
-          background: #ffffff;
-          border-bottom: 1px solid #E2E8F0;
+          height: 76px;
+          background: #76DEFF;
+          border-bottom: 1px solid rgba(0, 48, 135, 0.12);
           display: flex;
           align-items: center;
           justify-content: space-between;
           padding: 0 36px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
         }
 
         .menu-toggle {
           border: none;
           background: transparent;
           cursor: pointer;
-          color: #475569;
+          color: #003087;
           display: flex;
           align-items: center;
           font-size: 20px;
           padding: 6px;
           border-radius: 8px;
-          transition: background 0.2s;
         }
         .menu-toggle:hover {
-          background: #F1F5F9;
-          color: #0F172A;
+          background: rgba(255, 255, 255, 0.3);
         }
 
         .admin-profile {
           display: flex;
           align-items: center;
           gap: 10px;
-          font-size: 14px;
-          font-weight: 600;
-          color: #1E293B;
-          background: #F8FAFC;
-          border: 1px solid #E2E8F0;
-          padding: 6px 14px;
+          font-size: 14.5px;
+          font-weight: 700;
+          color: #003087;
+          background: rgba(255, 255, 255, 0.7);
+          border: 1px solid rgba(0, 48, 135, 0.15);
+          padding: 6px 16px;
           border-radius: 20px;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
         }
 
         .admin-avatar {
           width: 32px;
           height: 32px;
-          border: 1px solid #CBD5E1;
+          border: 2px solid #005DFF;
           background: #ffffff;
           color: #005DFF;
           border-radius: 50%;
@@ -990,46 +994,47 @@ export function Admindashboard({ onLogout }) {
         }
 
         .page-heading h1 {
-          font-size: 26px;
+          font-size: 28px;
           font-weight: 800;
-          color: #0F172A;
+          color: #002b66;
         }
 
         .page-heading p {
           margin-top: 4px;
-          font-size: 14px;
-          color: #64748B;
-          font-weight: 400;
+          font-size: 14.5px;
+          color: #1e3a8a;
+          font-weight: 500;
         }
 
         .system-online-indicator {
           font-size: 13px;
-          font-weight: 600;
+          font-weight: 700;
+          color: #003087;
           display: flex;
           align-items: center;
           gap: 8px;
-          background: #ffffff;
-          border: 1px solid #E2E8F0;
-          padding: 7px 16px;
+          background: rgba(255, 255, 255, 0.85);
+          border: 1px solid rgba(0, 93, 255, 0.2);
+          padding: 8px 18px;
           border-radius: 20px;
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+          box-shadow: 0 2px 8px rgba(0, 93, 255, 0.12);
         }
 
         .online-dot,
         .offline-dot {
-          width: 8px;
-          height: 8px;
+          width: 9px;
+          height: 9px;
           border-radius: 50%;
         }
 
         .online-dot {
           background: #10B981;
-          box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+          box-shadow: 0 0 7px #10B981;
         }
 
         .offline-dot {
           background: #EF4444;
-          box-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
+          box-shadow: 0 0 7px #EF4444;
         }
 
         .stats-grid {
@@ -1040,27 +1045,21 @@ export function Admindashboard({ onLogout }) {
         }
 
         .stat-card {
-          min-height: 115px;
+          min-height: 118px;
           padding: 20px 18px;
-          border-radius: 16px;
+          border-radius: 20px;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          border: 1px solid #E2E8F0;
-          background: #ffffff;
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+          border: 1px solid rgba(0, 93, 255, 0.12);
+          background: #B9F9FF;
+          box-shadow: 0 6px 18px rgba(93, 134, 148, 0.22);
           transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
         .stat-card:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+          transform: translateY(-3px);
+          box-shadow: 0 10px 24px rgba(93, 134, 148, 0.32);
         }
-
-        .blue-card { border-left: 4px solid #005DFF; }
-        .green-card { border-left: 4px solid #10B981; }
-        .purple-card { border-left: 4px solid #8B5CF6; }
-        .yellow-card { border-left: 4px solid #F59E0B; }
-        .cyan-card { border-left: 4px solid #06B6D4; }
 
         .stat-info {
           display: flex;
@@ -1071,50 +1070,51 @@ export function Admindashboard({ onLogout }) {
         .stat-label {
           font-size: 12px;
           font-weight: 600;
-          color: #64748B;
+          color: #003087;
         }
 
         .stat-info strong {
-          font-size: 24px;
+          font-size: 26px;
           font-weight: 800;
-          line-height: 30px;
-          color: #0F172A;
+          line-height: 32px;
+          color: #002b66;
         }
 
         .stat-info small {
           font-size: 11px;
-          color: #94A3B8;
-          font-weight: 500;
+          color: #475569;
+          font-weight: 600;
         }
 
         .text-online { color: #059669; }
         .text-offline { color: #DC2626; }
 
         .stat-icon {
-          width: 44px;
-          height: 44px;
-          border-radius: 12px;
-          background: #F1F5F9;
+          width: 46px;
+          height: 46px;
+          border-radius: 14px;
+          background: #ffffff;
           color: #005DFF;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 20px;
+          font-size: 22px;
+          box-shadow: 0 3px 8px rgba(0, 93, 255, 0.18);
         }
 
         .dashboard-content-grid {
           display: grid;
           grid-template-columns: 1.8fr 1fr;
-          gap: 20px;
+          gap: 22px;
         }
 
         .content-card,
         .gesture-table-card {
-          background: #ffffff;
-          border-radius: 18px;
-          border: 1px solid #E2E8F0;
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-          padding: 24px;
+          background: #B9F9FF;
+          border-radius: 24px;
+          border: 1px solid rgba(0, 93, 255, 0.12);
+          box-shadow: 0 8px 24px rgba(93, 134, 148, 0.22);
+          padding: 26px;
         }
 
         .card-header {
@@ -1126,9 +1126,9 @@ export function Admindashboard({ onLogout }) {
         }
 
         .content-card h2 {
-          font-size: 18px;
-          font-weight: 700;
-          color: #0F172A;
+          font-size: 19px;
+          font-weight: 800;
+          color: #002b66;
         }
 
         .card-actions {
@@ -1138,8 +1138,8 @@ export function Admindashboard({ onLogout }) {
 
         .export-button,
         .delete-all-button {
-          border-radius: 10px;
-          padding: 8px 14px;
+          border-radius: 18px;
+          padding: 8px 16px;
           font-family: inherit;
           font-size: 12px;
           font-weight: 600;
@@ -1151,21 +1151,22 @@ export function Admindashboard({ onLogout }) {
         }
 
         .export-button {
-          background: #F8FAFC;
-          border: 1px solid #CBD5E1;
-          color: #334155;
+          background: #005DFF;
+          border: none;
+          color: #ffffff;
+          box-shadow: 0 3px 8px rgba(0, 93, 255, 0.3);
         }
         .export-button:hover {
-          background: #E2E8F0;
+          background: #004ecc;
         }
 
         .delete-all-button {
-          background: #FEF2F2;
+          background: rgba(239, 68, 68, 0.15);
           color: #DC2626;
-          border: 1px solid #FECACA;
+          border: 1px solid rgba(239, 68, 68, 0.3);
         }
         .delete-all-button:hover {
-          background: #FEE2E2;
+          background: rgba(239, 68, 68, 0.25);
         }
 
         .delete-all-button.confirm {
@@ -1177,23 +1178,23 @@ export function Admindashboard({ onLogout }) {
           max-height: 360px;
           overflow-y: auto;
           overflow-x: auto;
-          border-radius: 12px;
-          border: 1px solid #E2E8F0;
-          background: #ffffff;
+          border-radius: 14px;
+          background: rgba(255, 255, 255, 0.7);
+          border: 1px solid rgba(0, 93, 255, 0.1);
         }
 
         .gesture-table-wrapper {
           overflow-x: auto;
-          border-radius: 12px;
-          border: 1px solid #E2E8F0;
-          background: #ffffff;
+          border-radius: 14px;
+          background: rgba(255, 255, 255, 0.7);
+          border: 1px solid rgba(0, 93, 255, 0.1);
         }
 
         .log-table thead {
           position: sticky;
           top: 0;
           z-index: 2;
-          background: #F8FAFC;
+          background: #76DEFF;
         }
 
         table {
@@ -1203,37 +1204,36 @@ export function Admindashboard({ onLogout }) {
 
         th {
           font-size: 12px;
-          color: #475569;
-          font-weight: 600;
+          color: #003087;
+          font-weight: 700;
           text-align: left;
-          padding: 12px 14px;
-          border-bottom: 1px solid #E2E8F0;
-          background: #F8FAFC;
+          padding: 13px 14px;
+          border-bottom: 1px solid rgba(0, 93, 255, 0.12);
         }
 
         td {
           font-size: 13px;
           padding: 13px 14px;
-          border-bottom: 1px solid #F1F5F9;
-          color: #1E293B;
+          border-bottom: 1px solid rgba(0, 93, 255, 0.08);
+          color: #0f172a;
         }
 
         .time-cell {
-          color: #64748B;
+          color: #475569;
           white-space: nowrap;
-          font-size: 12.5px;
+          font-weight: 500;
         }
 
         .gesture-badge {
           display: inline-block;
-          padding: 4px 10px;
-          border-radius: 8px;
-          background: #EFF6FF;
+          padding: 5px 12px;
+          border-radius: 20px;
+          background: rgba(0, 93, 255, 0.15);
           color: #005DFF;
-          font-weight: 600;
+          font-weight: 700;
           font-size: 12px;
-          border: 1px solid #DBEAFE;
         }
+
 
 
         .small-delete-button {
@@ -1330,13 +1330,14 @@ export function Admindashboard({ onLogout }) {
         }
 
         .gesture-table th {
-          background: #F8FAFC;
-          color: #475569;
-          font-weight: 600;
+          background: #76DEFF;
+          color: #003087;
+          font-weight: 700;
           font-size: 12px;
-          padding: 12px 18px;
-          border-bottom: 1px solid #E2E8F0;
+          padding: 13px 18px;
+          border-bottom: 1px solid rgba(0, 93, 255, 0.12);
         }
+
 
 
         .gesture-table td {
