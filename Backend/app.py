@@ -32,6 +32,7 @@ import camera
 import database
 import models
 import schemas
+import mqtt_manager
 
 from auth import (
     verify_password,
@@ -111,6 +112,9 @@ async def lifespan(app: FastAPI):
 
     database.Base.metadata.create_all(bind=database.engine)
 
+    # Inisialisasi koneksi MQTT untuk IoT Telemetry
+    mqtt_manager.init_mqtt()
+
     ai_task = asyncio.create_task(ai_processor())
 
     app.state.ai_task = ai_task
@@ -120,6 +124,9 @@ async def lifespan(app: FastAPI):
     _is_shutting_down = True
 
     print("\nStopping backend...")
+
+    mqtt_manager.stop_mqtt()
+
 
     if (
         hasattr(app.state, "ai_task")
@@ -225,6 +232,9 @@ async def ai_processor():
                     finally:
 
                         db.close()
+
+                # Publish gesture ke MQTT Broker untuk IoT System
+                mqtt_manager.publish_gesture(gloss, conf)
 
                 _latest_result = {
                     "gloss": gloss,
