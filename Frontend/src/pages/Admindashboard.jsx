@@ -817,16 +817,18 @@ export function Admindashboard({ onLogout }) {
           min-height: 100vh;
           background: linear-gradient(180.86deg, #00BFFF 24.72%, #BDEEF5 57.96%);
           display: flex;
-          color: #000;
+          color: #0f172a;
+          font-family: 'Poppins', sans-serif;
         }
 
         .sidebar {
           width: 255px;
           min-height: 100vh;
-          background: linear-gradient(180deg, #008ED4, #00699D);
+          background: linear-gradient(180deg, #003087 0%, #001f5c 100%);
           padding: 28px 18px;
           flex-shrink: 0;
           transition: width .3s ease;
+          box-shadow: 4px 0 20px rgba(0, 48, 135, 0.2);
         }
 
         .sidebar.closed {
@@ -876,17 +878,18 @@ export function Admindashboard({ onLogout }) {
           width: 100%;
           border: none;
           background: transparent;
-          color: white;
+          color: rgba(255, 255, 255, 0.85);
           display: flex;
           align-items: center;
           gap: 15px;
           padding: 14px;
-          border-radius: 10px;
+          border-radius: 14px;
           cursor: pointer;
           font-family: inherit;
-          font-size: 14px;
+          font-size: 14.5px;
+          font-weight: 600;
           text-align: left;
-          transition: .2s;
+          transition: all .2s ease;
         }
 
         .sidebar.closed .menu-button {
@@ -895,15 +898,21 @@ export function Admindashboard({ onLogout }) {
 
         .menu-button:hover {
           background: rgba(255,255,255,.15);
+          color: #ffffff;
         }
 
         .menu-button.active {
-          background: #38B6FF;
-          box-shadow: 0 5px 15px rgba(0,0,0,.18);
+          background: #005DFF;
+          color: #ffffff;
+          box-shadow: 0 4px 14px rgba(0, 93, 255, 0.4);
         }
 
         .logout-menu {
           margin-top: 30px;
+        }
+        .logout-menu .menu-button:hover {
+          background: rgba(239, 68, 68, 0.2);
+          color: #fca5a5;
         }
 
         .main-area {
@@ -912,37 +921,44 @@ export function Admindashboard({ onLogout }) {
         }
 
         .top-header {
-          height: 84px;
-          background: rgba(255,255,255,.92);
-          border-bottom: 1px solid rgba(0,0,0,.12);
+          height: 80px;
+          background: #76DEFF;
+          border-bottom: 1px solid rgba(0,0,0,.1);
           display: flex;
           align-items: center;
           justify-content: space-between;
           padding: 0 36px;
-          box-shadow: 0 3px 10px rgba(0,0,0,.12);
+          box-shadow: 0 4px 12px rgba(0,0,0,.08);
         }
 
         .menu-toggle {
           border: none;
           background: transparent;
           cursor: pointer;
-          color: #1D1B20;
+          color: #003087;
           display: flex;
           align-items: center;
+          font-size: 20px;
         }
 
         .admin-profile {
           display: flex;
           align-items: center;
           gap: 10px;
-          font-size: 14px;
-          font-weight: 600;
+          font-size: 14.5px;
+          font-weight: 700;
+          color: #003087;
+          background: rgba(255, 255, 255, 0.6);
+          padding: 6px 14px;
+          border-radius: 20px;
         }
 
         .admin-avatar {
-          width: 36px;
-          height: 36px;
-          border: 1px solid rgba(0,0,0,.2);
+          width: 34px;
+          height: 34px;
+          border: 2px solid #005DFF;
+          background: #ffffff;
+          color: #005DFF;
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -963,15 +979,16 @@ export function Admindashboard({ onLogout }) {
         }
 
         .page-heading h1 {
-          font-size: 29px;
-          font-weight: 700;
-          color: #000;
+          font-size: 30px;
+          font-weight: 800;
+          color: #002b66;
         }
 
         .page-heading p {
           margin-top: 4px;
-          font-size: 14px;
-          color: rgba(0,0,0,.62);
+          font-size: 14.5px;
+          color: #334155;
+          font-weight: 500;
         }
 
         .system-online-indicator {
@@ -980,6 +997,10 @@ export function Admindashboard({ onLogout }) {
           display: flex;
           align-items: center;
           gap: 7px;
+          background: rgba(255, 255, 255, 0.8);
+          padding: 6px 14px;
+          border-radius: 20px;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.06);
         }
 
         .online-dot,
@@ -990,13 +1011,13 @@ export function Admindashboard({ onLogout }) {
         }
 
         .online-dot {
-          background: #00B94A;
-          box-shadow: 0 0 7px #00B94A;
+          background: #10B981;
+          box-shadow: 0 0 7px #10B981;
         }
 
         .offline-dot {
-          background: #F44336;
-          box-shadow: 0 0 7px #F44336;
+          background: #EF4444;
+          box-shadow: 0 0 7px #EF4444;
         }
 
         .stats-grid {
@@ -1008,34 +1029,39 @@ export function Admindashboard({ onLogout }) {
 
         .stat-card {
           min-height: 125px;
-          padding: 19px;
-          border-radius: 12px;
+          padding: 20px;
+          border-radius: 20px;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          border: 1px solid rgba(0,0,0,.12);
-          background: rgba(255,255,255,.65);
-          box-shadow: 0 4px 18px rgba(0,0,0,.08);
+          border: 1px solid rgba(0,0,0,.08);
+          background: #B9F9FF;
+          box-shadow: 0 6px 18px rgba(93, 134, 148, 0.22);
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .stat-card:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 10px 24px rgba(93, 134, 148, 0.32);
         }
 
         .blue-card {
-          border-color: rgba(0,120,255,.25);
+          border-left: 4px solid #005DFF;
         }
 
         .green-card {
-          border-color: rgba(0,180,80,.25);
+          border-left: 4px solid #10B981;
         }
 
         .purple-card {
-          border-color: rgba(150,70,220,.25);
+          border-left: 4px solid #8B5CF6;
         }
 
         .yellow-card {
-          border-color: rgba(230,170,0,.3);
+          border-left: 4px solid #F59E0B;
         }
 
         .cyan-card {
-          border-color: rgba(0,180,190,.3);
+          border-left: 4px solid #06B6D4;
         }
 
         .stat-info {
@@ -1045,39 +1071,43 @@ export function Admindashboard({ onLogout }) {
         }
 
         .stat-label {
-          font-size: 11px;
+          font-size: 12px;
           font-weight: 600;
-          color: rgba(0,0,0,.6);
+          color: #334155;
         }
 
         .stat-info strong {
-          font-size: 25px;
+          font-size: 26px;
+          font-weight: 800;
           line-height: 32px;
+          color: #002b66;
         }
 
         .stat-info small {
-          font-size: 10px;
-          color: rgba(0,0,0,.52);
+          font-size: 11px;
+          color: #64748b;
+          font-weight: 500;
         }
 
         .text-online {
-          color: #009B48;
+          color: #059669;
         }
 
         .text-offline {
-          color: #D62B2B;
+          color: #DC2626;
         }
 
         .stat-icon {
-          width: 43px;
-          height: 43px;
-          border-radius: 10px;
-          background: rgba(56,182,255,.2);
-          color: #007CC2;
+          width: 46px;
+          height: 46px;
+          border-radius: 14px;
+          background: #ffffff;
+          color: #005DFF;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 20px;
+          font-size: 22px;
+          box-shadow: 0 3px 8px rgba(0, 93, 255, 0.15);
         }
 
         .dashboard-content-grid {
@@ -1088,11 +1118,11 @@ export function Admindashboard({ onLogout }) {
 
         .content-card,
         .gesture-table-card {
-          background: rgba(255,255,255,.55);
-          border-radius: 12px;
-          border: 1px solid rgba(0,0,0,.12);
-          box-shadow: 0 4px 25px rgba(0,0,0,.12);
-          padding: 24px;
+          background: #B9F9FF;
+          border-radius: 24px;
+          border: 1px solid rgba(0,0,0,.08);
+          box-shadow: 0 8px 24px rgba(93, 134, 148, 0.22);
+          padding: 26px;
         }
 
         .card-header {
@@ -1104,8 +1134,9 @@ export function Admindashboard({ onLogout }) {
         }
 
         .content-card h2 {
-          font-size: 19px;
-          font-weight: 700;
+          font-size: 20px;
+          font-weight: 800;
+          color: #002b66;
         }
 
         .card-actions {
@@ -1115,31 +1146,39 @@ export function Admindashboard({ onLogout }) {
 
         .export-button,
         .delete-all-button {
-          border-radius: 7px;
-          padding: 8px 12px;
+          border-radius: 18px;
+          padding: 8px 16px;
           font-family: inherit;
-          font-size: 11px;
+          font-size: 12px;
           font-weight: 600;
           cursor: pointer;
           display: flex;
           align-items: center;
           gap: 6px;
+          transition: all 0.2s ease;
         }
 
         .export-button {
-          background: white;
-          border: 1px solid rgba(0,0,0,.22);
-          color: #005B95;
+          background: #005DFF;
+          border: none;
+          color: #ffffff;
+          box-shadow: 0 3px 8px rgba(0, 93, 255, 0.25);
+        }
+        .export-button:hover {
+          background: #004ecc;
         }
 
         .delete-all-button {
-          background: rgba(244,54,58,.1);
-          color: #D62B2B;
-          border: 1px solid rgba(244,54,58,.3);
+          background: rgba(239, 68, 68, 0.15);
+          color: #DC2626;
+          border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        .delete-all-button:hover {
+          background: rgba(239, 68, 68, 0.25);
         }
 
         .delete-all-button.confirm {
-          background: #D62B2B;
+          background: #DC2626;
           color: white;
         }
 
@@ -1147,18 +1186,21 @@ export function Admindashboard({ onLogout }) {
           max-height: 360px;
           overflow-y: auto;
           overflow-x: auto;
-          border-radius: 8px;
+          border-radius: 14px;
+          background: rgba(255, 255, 255, 0.7);
         }
 
         .gesture-table-wrapper {
           overflow-x: auto;
+          border-radius: 14px;
+          background: rgba(255, 255, 255, 0.7);
         }
 
         .log-table thead {
           position: sticky;
           top: 0;
           z-index: 2;
-          background: #DFF8FC;
+          background: #76DEFF;
         }
 
         table {
@@ -1167,36 +1209,40 @@ export function Admindashboard({ onLogout }) {
         }
 
         th {
-          font-size: 11px;
-          color: rgba(0,0,0,.58);
-          font-weight: 600;
+          font-size: 12px;
+          color: #003087;
+          font-weight: 700;
           text-align: left;
-          padding: 12px 10px;
-          border-bottom: 1px solid rgba(0,0,0,.15);
+          padding: 14px 12px;
+          border-bottom: 1px solid rgba(0,0,0,.1);
         }
 
         td {
-          font-size: 12px;
-          padding: 13px 10px;
-          border-bottom: 1px solid rgba(0,0,0,.09);
+          font-size: 13px;
+          padding: 13px 12px;
+          border-bottom: 1px solid rgba(0,0,0,.06);
+          color: #0f172a;
         }
 
         .time-cell {
-          color: rgba(0,0,0,.6);
+          color: #475569;
           white-space: nowrap;
+          font-weight: 500;
         }
 
         .gesture-badge {
           display: inline-block;
-          padding: 5px 10px;
+          padding: 5px 12px;
           border-radius: 20px;
-          background: rgba(56,182,255,.16);
-          color: #00699D;
-          font-weight: 600;
+          background: rgba(0, 93, 255, 0.15);
+          color: #005DFF;
+          font-weight: 700;
+          font-size: 12px;
         }
 
         .small-delete-button {
           border: none;
+
           background: transparent;
           color: #D62B2B;
           cursor: pointer;
@@ -1251,42 +1297,45 @@ export function Admindashboard({ onLogout }) {
         }
 
         .gesture-total {
-          background: rgba(56,182,255,.22);
-          color: #00699D;
-          padding: 8px 15px;
+          background: rgba(0, 93, 255, 0.15);
+          color: #005DFF;
+          padding: 8px 16px;
           border-radius: 20px;
-          font-size: 12px;
-          font-weight: 600;
+          font-size: 13px;
+          font-weight: 700;
         }
 
         .add-gesture-button {
           border: none;
-          background: #007CC2;
+          background: #005DFF;
           color: white;
-          border-radius: 8px;
-          padding: 10px 15px;
+          border-radius: 20px;
+          padding: 10px 20px;
           font-family: inherit;
-          font-size: 12px;
+          font-size: 13px;
           font-weight: 600;
           cursor: pointer;
           display: flex;
           align-items: center;
-          gap: 7px;
-          transition: .2s;
+          gap: 8px;
+          box-shadow: 0 4px 12px rgba(0, 93, 255, 0.3);
+          transition: all 0.2s ease;
         }
 
         .add-gesture-button:hover {
-          background: #00699D;
+          background: #004ecc;
+          transform: translateY(-1px);
+          box-shadow: 0 6px 16px rgba(0, 93, 255, 0.4);
         }
 
         .gesture-table-card {
-          padding: 0;
+          padding: 24px;
           overflow: hidden;
         }
 
         .gesture-table th {
-          background: rgba(255,255,255,.35);
-          padding: 17px 18px;
+          background: #76DEFF;
+          padding: 14px 18px;
         }
 
         .gesture-table td {
@@ -1295,31 +1344,35 @@ export function Admindashboard({ onLogout }) {
         }
 
         .gesture-name {
-          font-size: 14px;
+          font-size: 14.5px;
+          font-weight: 700;
+          color: #002b66;
         }
 
         .gesture-video {
           width: 150px;
           height: 90px;
           object-fit: cover;
-          border-radius: 8px;
+          border-radius: 10px;
           background: #000;
           display: block;
+          border: 2px solid rgba(0, 93, 255, 0.2);
         }
 
         .no-video {
-          font-size: 11px;
-          color: #D62B2B;
+          font-size: 12px;
+          color: #DC2626;
+          font-weight: 600;
         }
 
         .active-badge {
           display: inline-block;
-          padding: 5px 12px;
+          padding: 6px 14px;
           border-radius: 20px;
-          background: rgba(0,180,80,.15);
-          color: #008C42;
-          font-size: 11px;
-          font-weight: 600;
+          background: rgba(16, 185, 129, 0.15);
+          color: #059669;
+          font-size: 12px;
+          font-weight: 700;
         }
 
         .gesture-actions {
@@ -1329,37 +1382,48 @@ export function Admindashboard({ onLogout }) {
         }
 
         .edit-button {
-          border: 1px solid rgba(0,124,194,.35);
-          background: rgba(56,182,255,.12);
-          color: #00699D;
-          border-radius: 6px;
-          padding: 7px 10px;
+          border: 1px solid rgba(0, 93, 255, 0.25);
+          background: rgba(255, 255, 255, 0.9);
+          color: #005DFF;
+          border-radius: 8px;
+          padding: 8px 12px;
           font-family: inherit;
-          font-size: 11px;
+          font-size: 12px;
           font-weight: 600;
           cursor: pointer;
           display: flex;
           align-items: center;
-          gap: 5px;
+          gap: 6px;
+          transition: all 0.2s ease;
+        }
+        .edit-button:hover {
+          background: #005DFF;
+          color: #ffffff;
         }
 
         .gesture-delete-button {
-          width: 31px;
-          height: 31px;
-          border: 1px solid rgba(214,43,43,.25);
-          background: rgba(244,54,58,.1);
-          color: #D62B2B;
-          border-radius: 6px;
-          cursor: pointer;
+          width: 34px;
+          height: 34px;
+          border: 1px solid rgba(220, 38, 38, 0.25);
+          background: rgba(239, 68, 68, 0.1);
+          color: #DC2626;
+          border-radius: 8px;
           display: flex;
           align-items: center;
           justify-content: center;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+        .gesture-delete-button:hover {
+          background: #DC2626;
+          color: #ffffff;
         }
 
         .modal-overlay {
           position: fixed;
           inset: 0;
-          background: rgba(0,0,0,.45);
+          background: rgba(0, 0, 0, 0.55);
+          backdrop-filter: blur(4px);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -1370,10 +1434,11 @@ export function Admindashboard({ onLogout }) {
         .gesture-modal {
           width: 100%;
           max-width: 500px;
-          background: white;
-          border-radius: 14px;
-          padding: 26px;
-          box-shadow: 0 20px 60px rgba(0,0,0,.25);
+          background: #ffffff;
+          border-radius: 24px;
+          border: 1px solid rgba(0, 93, 255, 0.15);
+          box-shadow: 0 20px 50px rgba(0, 48, 135, 0.25);
+          padding: 30px;
         }
 
         .modal-header {
@@ -1385,8 +1450,10 @@ export function Admindashboard({ onLogout }) {
 
         .modal-header h2 {
           font-size: 20px;
-          color: #00699D;
+          font-weight: 800;
+          color: #002b66;
         }
+
 
         .close-modal {
           border: none;
