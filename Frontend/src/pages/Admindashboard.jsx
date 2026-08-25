@@ -101,8 +101,10 @@ export function Admindashboard({ onLogout }) {
   const [loading, setLoading] = useState(true);
   const [confirmClear, setConfirmClear] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const [showGestureModal, setShowGestureModal] = useState(false);
+
   const [editingGesture, setEditingGesture] = useState(null);
   const [gestureName, setGestureName] = useState("");
   const [gestureVideo, setGestureVideo] = useState(null);
@@ -815,7 +817,7 @@ export function Admindashboard({ onLogout }) {
 
         .admin-root {
           min-height: 100vh;
-          background: linear-gradient(180.86deg, #00BFFF 24.72%, #BDEEF5 57.96%);
+          background: #F1F5F9;
           display: flex;
           color: #0f172a;
           font-family: 'Poppins', sans-serif;
@@ -824,11 +826,11 @@ export function Admindashboard({ onLogout }) {
         .sidebar {
           width: 255px;
           min-height: 100vh;
-          background: linear-gradient(180deg, #003087 0%, #001f5c 100%);
+          background: #0F172A;
           padding: 28px 18px;
           flex-shrink: 0;
           transition: width .3s ease;
-          box-shadow: 4px 0 20px rgba(0, 48, 135, 0.2);
+          box-shadow: 2px 0 12px rgba(0, 0, 0, 0.05);
         }
 
         .sidebar.closed {
@@ -840,16 +842,16 @@ export function Admindashboard({ onLogout }) {
           align-items: center;
           gap: 12px;
           padding: 0 10px 35px;
-          font-size: 21px;
+          font-size: 20px;
           font-weight: 700;
           color: white;
         }
 
         .brand-icon {
-          width: 42px;
-          height: 42px;
+          width: 40px;
+          height: 40px;
           border-radius: 12px;
-          background: rgba(255,255,255,.22);
+          background: rgba(255, 255, 255, 0.1);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -871,22 +873,22 @@ export function Admindashboard({ onLogout }) {
         .sidebar-menu {
           display: flex;
           flex-direction: column;
-          gap: 10px;
+          gap: 8px;
         }
 
         .menu-button {
           width: 100%;
           border: none;
           background: transparent;
-          color: rgba(255, 255, 255, 0.85);
+          color: #94A3B8;
           display: flex;
           align-items: center;
-          gap: 15px;
-          padding: 14px;
-          border-radius: 14px;
+          gap: 14px;
+          padding: 12px 16px;
+          border-radius: 12px;
           cursor: pointer;
           font-family: inherit;
-          font-size: 14.5px;
+          font-size: 14px;
           font-weight: 600;
           text-align: left;
           transition: all .2s ease;
@@ -897,22 +899,24 @@ export function Admindashboard({ onLogout }) {
         }
 
         .menu-button:hover {
-          background: rgba(255,255,255,.15);
-          color: #ffffff;
+          background: rgba(255, 255, 255, 0.06);
+          color: #F8FAFC;
         }
 
         .menu-button.active {
           background: #005DFF;
           color: #ffffff;
-          box-shadow: 0 4px 14px rgba(0, 93, 255, 0.4);
+          box-shadow: 0 4px 12px rgba(0, 93, 255, 0.35);
         }
 
         .logout-menu {
           margin-top: 30px;
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
+          padding-top: 18px;
         }
-        .logout-menu .menu-button:hover {
-          background: rgba(239, 68, 68, 0.2);
-          color: #fca5a5;
+        .logout-menu:hover {
+          background: rgba(239, 68, 68, 0.12) !important;
+          color: #FCA5A5 !important;
         }
 
         .main-area {
@@ -921,42 +925,49 @@ export function Admindashboard({ onLogout }) {
         }
 
         .top-header {
-          height: 80px;
-          background: #76DEFF;
-          border-bottom: 1px solid rgba(0,0,0,.1);
+          height: 72px;
+          background: #ffffff;
+          border-bottom: 1px solid #E2E8F0;
           display: flex;
           align-items: center;
           justify-content: space-between;
           padding: 0 36px;
-          box-shadow: 0 4px 12px rgba(0,0,0,.08);
         }
 
         .menu-toggle {
           border: none;
           background: transparent;
           cursor: pointer;
-          color: #003087;
+          color: #475569;
           display: flex;
           align-items: center;
           font-size: 20px;
+          padding: 6px;
+          border-radius: 8px;
+          transition: background 0.2s;
+        }
+        .menu-toggle:hover {
+          background: #F1F5F9;
+          color: #0F172A;
         }
 
         .admin-profile {
           display: flex;
           align-items: center;
           gap: 10px;
-          font-size: 14.5px;
-          font-weight: 700;
-          color: #003087;
-          background: rgba(255, 255, 255, 0.6);
+          font-size: 14px;
+          font-weight: 600;
+          color: #1E293B;
+          background: #F8FAFC;
+          border: 1px solid #E2E8F0;
           padding: 6px 14px;
           border-radius: 20px;
         }
 
         .admin-avatar {
-          width: 34px;
-          height: 34px;
-          border: 2px solid #005DFF;
+          width: 32px;
+          height: 32px;
+          border: 1px solid #CBD5E1;
           background: #ffffff;
           color: #005DFF;
           border-radius: 50%;
@@ -966,8 +977,8 @@ export function Admindashboard({ onLogout }) {
         }
 
         .page-container {
-          padding: 36px 40px 60px;
-          max-width: 1600px;
+          padding: 32px 36px 60px;
+          max-width: 1500px;
           margin: auto;
         }
 
@@ -975,20 +986,20 @@ export function Admindashboard({ onLogout }) {
           display: flex;
           justify-content: space-between;
           align-items: flex-start;
-          margin-bottom: 28px;
+          margin-bottom: 24px;
         }
 
         .page-heading h1 {
-          font-size: 30px;
+          font-size: 26px;
           font-weight: 800;
-          color: #002b66;
+          color: #0F172A;
         }
 
         .page-heading p {
           margin-top: 4px;
-          font-size: 14.5px;
-          color: #334155;
-          font-weight: 500;
+          font-size: 14px;
+          color: #64748B;
+          font-weight: 400;
         }
 
         .system-online-indicator {
@@ -996,28 +1007,29 @@ export function Admindashboard({ onLogout }) {
           font-weight: 600;
           display: flex;
           align-items: center;
-          gap: 7px;
-          background: rgba(255, 255, 255, 0.8);
-          padding: 6px 14px;
+          gap: 8px;
+          background: #ffffff;
+          border: 1px solid #E2E8F0;
+          padding: 7px 16px;
           border-radius: 20px;
-          box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
         .online-dot,
         .offline-dot {
-          width: 9px;
-          height: 9px;
+          width: 8px;
+          height: 8px;
           border-radius: 50%;
         }
 
         .online-dot {
           background: #10B981;
-          box-shadow: 0 0 7px #10B981;
+          box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
         }
 
         .offline-dot {
           background: #EF4444;
-          box-shadow: 0 0 7px #EF4444;
+          box-shadow: 0 0 6px rgba(239, 68, 68, 0.6);
         }
 
         .stats-grid {
@@ -1028,41 +1040,27 @@ export function Admindashboard({ onLogout }) {
         }
 
         .stat-card {
-          min-height: 125px;
-          padding: 20px;
-          border-radius: 20px;
+          min-height: 115px;
+          padding: 20px 18px;
+          border-radius: 16px;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          border: 1px solid rgba(0,0,0,.08);
-          background: #B9F9FF;
-          box-shadow: 0 6px 18px rgba(93, 134, 148, 0.22);
+          border: 1px solid #E2E8F0;
+          background: #ffffff;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
           transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
         .stat-card:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 10px 24px rgba(93, 134, 148, 0.32);
+          transform: translateY(-2px);
+          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
         }
 
-        .blue-card {
-          border-left: 4px solid #005DFF;
-        }
-
-        .green-card {
-          border-left: 4px solid #10B981;
-        }
-
-        .purple-card {
-          border-left: 4px solid #8B5CF6;
-        }
-
-        .yellow-card {
-          border-left: 4px solid #F59E0B;
-        }
-
-        .cyan-card {
-          border-left: 4px solid #06B6D4;
-        }
+        .blue-card { border-left: 4px solid #005DFF; }
+        .green-card { border-left: 4px solid #10B981; }
+        .purple-card { border-left: 4px solid #8B5CF6; }
+        .yellow-card { border-left: 4px solid #F59E0B; }
+        .cyan-card { border-left: 4px solid #06B6D4; }
 
         .stat-info {
           display: flex;
@@ -1073,56 +1071,50 @@ export function Admindashboard({ onLogout }) {
         .stat-label {
           font-size: 12px;
           font-weight: 600;
-          color: #334155;
+          color: #64748B;
         }
 
         .stat-info strong {
-          font-size: 26px;
+          font-size: 24px;
           font-weight: 800;
-          line-height: 32px;
-          color: #002b66;
+          line-height: 30px;
+          color: #0F172A;
         }
 
         .stat-info small {
           font-size: 11px;
-          color: #64748b;
+          color: #94A3B8;
           font-weight: 500;
         }
 
-        .text-online {
-          color: #059669;
-        }
-
-        .text-offline {
-          color: #DC2626;
-        }
+        .text-online { color: #059669; }
+        .text-offline { color: #DC2626; }
 
         .stat-icon {
-          width: 46px;
-          height: 46px;
-          border-radius: 14px;
-          background: #ffffff;
+          width: 44px;
+          height: 44px;
+          border-radius: 12px;
+          background: #F1F5F9;
           color: #005DFF;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 22px;
-          box-shadow: 0 3px 8px rgba(0, 93, 255, 0.15);
+          font-size: 20px;
         }
 
         .dashboard-content-grid {
           display: grid;
           grid-template-columns: 1.8fr 1fr;
-          gap: 22px;
+          gap: 20px;
         }
 
         .content-card,
         .gesture-table-card {
-          background: #B9F9FF;
-          border-radius: 24px;
-          border: 1px solid rgba(0,0,0,.08);
-          box-shadow: 0 8px 24px rgba(93, 134, 148, 0.22);
-          padding: 26px;
+          background: #ffffff;
+          border-radius: 18px;
+          border: 1px solid #E2E8F0;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+          padding: 24px;
         }
 
         .card-header {
@@ -1134,9 +1126,9 @@ export function Admindashboard({ onLogout }) {
         }
 
         .content-card h2 {
-          font-size: 20px;
-          font-weight: 800;
-          color: #002b66;
+          font-size: 18px;
+          font-weight: 700;
+          color: #0F172A;
         }
 
         .card-actions {
@@ -1146,8 +1138,8 @@ export function Admindashboard({ onLogout }) {
 
         .export-button,
         .delete-all-button {
-          border-radius: 18px;
-          padding: 8px 16px;
+          border-radius: 10px;
+          padding: 8px 14px;
           font-family: inherit;
           font-size: 12px;
           font-weight: 600;
@@ -1159,22 +1151,21 @@ export function Admindashboard({ onLogout }) {
         }
 
         .export-button {
-          background: #005DFF;
-          border: none;
-          color: #ffffff;
-          box-shadow: 0 3px 8px rgba(0, 93, 255, 0.25);
+          background: #F8FAFC;
+          border: 1px solid #CBD5E1;
+          color: #334155;
         }
         .export-button:hover {
-          background: #004ecc;
+          background: #E2E8F0;
         }
 
         .delete-all-button {
-          background: rgba(239, 68, 68, 0.15);
+          background: #FEF2F2;
           color: #DC2626;
-          border: 1px solid rgba(239, 68, 68, 0.3);
+          border: 1px solid #FECACA;
         }
         .delete-all-button:hover {
-          background: rgba(239, 68, 68, 0.25);
+          background: #FEE2E2;
         }
 
         .delete-all-button.confirm {
@@ -1186,21 +1177,23 @@ export function Admindashboard({ onLogout }) {
           max-height: 360px;
           overflow-y: auto;
           overflow-x: auto;
-          border-radius: 14px;
-          background: rgba(255, 255, 255, 0.7);
+          border-radius: 12px;
+          border: 1px solid #E2E8F0;
+          background: #ffffff;
         }
 
         .gesture-table-wrapper {
           overflow-x: auto;
-          border-radius: 14px;
-          background: rgba(255, 255, 255, 0.7);
+          border-radius: 12px;
+          border: 1px solid #E2E8F0;
+          background: #ffffff;
         }
 
         .log-table thead {
           position: sticky;
           top: 0;
           z-index: 2;
-          background: #76DEFF;
+          background: #F8FAFC;
         }
 
         table {
@@ -1210,35 +1203,38 @@ export function Admindashboard({ onLogout }) {
 
         th {
           font-size: 12px;
-          color: #003087;
-          font-weight: 700;
+          color: #475569;
+          font-weight: 600;
           text-align: left;
-          padding: 14px 12px;
-          border-bottom: 1px solid rgba(0,0,0,.1);
+          padding: 12px 14px;
+          border-bottom: 1px solid #E2E8F0;
+          background: #F8FAFC;
         }
 
         td {
           font-size: 13px;
-          padding: 13px 12px;
-          border-bottom: 1px solid rgba(0,0,0,.06);
-          color: #0f172a;
+          padding: 13px 14px;
+          border-bottom: 1px solid #F1F5F9;
+          color: #1E293B;
         }
 
         .time-cell {
-          color: #475569;
+          color: #64748B;
           white-space: nowrap;
-          font-weight: 500;
+          font-size: 12.5px;
         }
 
         .gesture-badge {
           display: inline-block;
-          padding: 5px 12px;
-          border-radius: 20px;
-          background: rgba(0, 93, 255, 0.15);
+          padding: 4px 10px;
+          border-radius: 8px;
+          background: #EFF6FF;
           color: #005DFF;
-          font-weight: 700;
+          font-weight: 600;
           font-size: 12px;
+          border: 1px solid #DBEAFE;
         }
+
 
         .small-delete-button {
           border: none;
@@ -1334,9 +1330,14 @@ export function Admindashboard({ onLogout }) {
         }
 
         .gesture-table th {
-          background: #76DEFF;
-          padding: 14px 18px;
+          background: #F8FAFC;
+          color: #475569;
+          font-weight: 600;
+          font-size: 12px;
+          padding: 12px 18px;
+          border-bottom: 1px solid #E2E8F0;
         }
+
 
         .gesture-table td {
           padding: 15px 18px;
@@ -1414,10 +1415,87 @@ export function Admindashboard({ onLogout }) {
           cursor: pointer;
           transition: all 0.2s ease;
         }
-        .gesture-delete-button:hover {
-          background: #DC2626;
-          color: #ffffff;
+        /* ─── MODAL LOGOUT KONFIRMASI ─── */
+        .logout-modal {
+          width: 100%;
+          max-width: 420px;
+          background: #ffffff;
+          border-radius: 20px;
+          border: 1px solid #E2E8F0;
+          box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+          padding: 28px 24px;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 16px;
         }
+
+        .logout-icon-wrap {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background: #FEF2F2;
+          color: #DC2626;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 28px;
+          margin-bottom: 4px;
+        }
+
+        .logout-modal h3 {
+          font-size: 20px;
+          font-weight: 700;
+          color: #0F172A;
+        }
+
+        .logout-modal p {
+          font-size: 14px;
+          color: #64748B;
+          line-height: 1.6;
+        }
+
+        .logout-actions {
+          display: flex;
+          width: 100%;
+          gap: 12px;
+          margin-top: 8px;
+        }
+
+        .logout-cancel-btn {
+          flex: 1;
+          background: #F1F5F9;
+          border: 1px solid #CBD5E1;
+          color: #475569;
+          padding: 11px 18px;
+          border-radius: 12px;
+          font-weight: 600;
+          font-size: 14px;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+        .logout-cancel-btn:hover {
+          background: #E2E8F0;
+        }
+
+        .logout-confirm-btn {
+          flex: 1;
+          background: #DC2626;
+          border: none;
+          color: #ffffff;
+          padding: 11px 18px;
+          border-radius: 12px;
+          font-weight: 600;
+          font-size: 14px;
+          cursor: pointer;
+          box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+          transition: all 0.2s;
+        }
+        .logout-confirm-btn:hover {
+          background: #B91C1C;
+        }
+
 
         .modal-overlay {
           position: fixed;
@@ -1658,7 +1736,7 @@ export function Admindashboard({ onLogout }) {
 
             <button
               className="menu-button logout-menu"
-              onClick={onLogout}
+              onClick={() => setShowLogoutModal(true)}
             >
               <LogoutIcon />
 
@@ -1692,6 +1770,46 @@ export function Admindashboard({ onLogout }) {
             : <GesturePage />}
         </main>
       </div>
+
+      {/* ── MODAL LOGOUT KONFIRMASI ── */}
+      {showLogoutModal && (
+        <div
+          className="modal-overlay"
+          onClick={(event) => {
+            if (event.target === event.currentTarget) {
+              setShowLogoutModal(false);
+            }
+          }}
+        >
+          <div className="logout-modal">
+            <div className="logout-icon-wrap">
+              <LogoutIcon />
+            </div>
+
+            <h3>Konfirmasi Keluar</h3>
+            <p>Apakah Anda yakin ingin keluar dari sesi Dashboard Admin BridgeCom?</p>
+
+            <div className="logout-actions">
+              <button
+                className="logout-cancel-btn"
+                onClick={() => setShowLogoutModal(false)}
+              >
+                Batal
+              </button>
+
+              <button
+                className="logout-confirm-btn"
+                onClick={() => {
+                  setShowLogoutModal(false);
+                  onLogout?.();
+                }}
+              >
+                Ya, Keluar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {showGestureModal && (
         <div
@@ -1783,3 +1901,4 @@ export function Admindashboard({ onLogout }) {
     </>
   );
 }
+
