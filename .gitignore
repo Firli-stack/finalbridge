@@ -45,8 +45,12 @@ Thumbs.db
 *.log
 logs/
 
+# ── Dataset & Media Uploads ──────────────────────────────
 dataset/
+Backend/uploads/
+Backend/uploads/gesture-videos/
+mp_models/*.task
 *.mp4
 *.avi
 *.mov
-*.npy
+*.npy
